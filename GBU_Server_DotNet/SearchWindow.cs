@@ -21,7 +21,8 @@ namespace GBU_Server_DotNet
             public int cam;
             public DateTime dateTime;
             public string plateStr;
-            public Image snapshot;
+            public string imageFilePath;
+            //public Image snapshot;
         };
 
         private List<PLATE_FOUND> _plateList = new List<PLATE_FOUND>();
@@ -41,8 +42,10 @@ namespace GBU_Server_DotNet
             Search_listView1.GridLines = true;
 
             Search_listView1.Columns.Add("Camera ID", 90, HorizontalAlignment.Left);
-            Search_listView1.Columns.Add("Data & Time", 140, HorizontalAlignment.Left);
+            Search_listView1.Columns.Add("Data & Time", 170, HorizontalAlignment.Left);
             Search_listView1.Columns.Add("Plate String", 100, HorizontalAlignment.Left);
+
+            comboBox_Channel.SelectedIndex = 0;
         }
 
         private void Search_button_OK_Click(object sender, EventArgs e)
@@ -55,7 +58,8 @@ namespace GBU_Server_DotNet
             DataTable result = new DataTable();
 
             Search_listView1.Items.Clear();
-            dbManager.SearchPlate(search_textBox_search.Text, ref result);
+            //dbManager.SearchPlate(search_textBox_search.Text, ref result);
+            dbManager.SearchPlateForFile(comboBox_Channel.SelectedIndex - 1 ,search_textBox_search.Text, ref result);
 
             foreach (DataRow dr in result.Rows)
             {
@@ -63,15 +67,17 @@ namespace GBU_Server_DotNet
                 ListViewItem item = new ListViewItem(itemStr);
                 Search_listView1.Items.Add(item);
 
-                /*PLATE_FOUND plate = new PLATE_FOUND();
+                PLATE_FOUND plate = new PLATE_FOUND();
                 plate.cam = Convert.ToInt32(dr["camId"]);
                 plate.dateTime = Convert.ToDateTime(dr["dateTime"]);
                 plate.id = _plateListIdx;
                 plate.plateStr = Convert.ToString(dr["plate"]);
-                plate.snapshot = byteArrayToImage((byte[])dr["image"]);
+                plate.imageFilePath = Convert.ToString(dr["imageFilePath"]);
+                //plate.snapshot = byteArrayToImage((byte[])dr["image"]);
+
 
                 _plateList.Add(plate);
-                _plateListIdx++;*/
+                _plateListIdx++;
             }
 
         }
@@ -83,9 +89,8 @@ namespace GBU_Server_DotNet
 
         private void Search_listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // to be added...
-            //int index = Search_listView1.FocusedItem.Index;
-            //pictureBox_searchImage.Image = _plateList[index].snapshot;
+            int index = Search_listView1.FocusedItem.Index;
+            pictureBox_searchImage.ImageLocation = _plateList[index].imageFilePath;
         }
 
         public Image byteArrayToImage(byte[] byteArrayIn)
@@ -93,6 +98,11 @@ namespace GBU_Server_DotNet
             MemoryStream ms = new MemoryStream(byteArrayIn);
             Image returnImage = Image.FromStream(ms);
             return returnImage;
+        }
+
+        private void comboBox_Channel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
 

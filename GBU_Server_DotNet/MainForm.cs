@@ -28,17 +28,18 @@ namespace GBU_Server_DotNet
         // for MJPEG
         private MediaPlayer_MJPEG playerMjpeg;
 
-        public struct PLATE_FOUND
-        {
-            public int id;
-            public int cam;
-            public DateTime dateTime;
-            public string plateStr;
-            public Image snapshot;
-        };
+        //public struct PLATE_FOUND
+        //{
+        //    public int id;
+        //    public int cam;
+        //    public DateTime dateTime;
+        //    public string plateStr;
+        //    public string imageFilePath;
+        //    //public Image snapshot;
+        //};
 
-        private List<PLATE_FOUND> _plateList = new List<PLATE_FOUND>();
-        private int _plateListIdx = 0;
+        //private List<PLATE_FOUND> _plateList = new List<PLATE_FOUND>();
+        //private int _plateListIdx = 0;
 
         private Database dbManager = new Database();
 
@@ -69,7 +70,7 @@ namespace GBU_Server_DotNet
             listView1.GridLines = true;
 
             listView1.Columns.Add("Camera ID", 90, HorizontalAlignment.Left);
-            listView1.Columns.Add("Data & Time", 140, HorizontalAlignment.Left);
+            listView1.Columns.Add("Data & Time", 170, HorizontalAlignment.Left);
             listView1.Columns.Add("Plate String", 80, HorizontalAlignment.Left);
 
             InitCamera();
@@ -118,19 +119,19 @@ namespace GBU_Server_DotNet
                         Image returnImage = Image.FromStream(ms);
                         //anprResultThumbnail.Image = returnImage;
 
-                        PLATE_FOUND plate = new PLATE_FOUND();
-                        plate.cam = camera.camID;
-                        plate.dateTime = DateTime.Now;
-                        plate.id = _plateListIdx;
-                        plate.plateStr = plateStr;
-                        plate.snapshot = returnImage;
+                        //PLATE_FOUND plate = new PLATE_FOUND();
+                        //plate.cam = camera.camID;
+                        //plate.dateTime = DateTime.Now;
+                        //plate.id = _plateListIdx;
+                        //plate.plateStr = plateStr;
+                        //plate.snapshot = returnImage;
 
-                        _plateList.Add(plate);
-                        _plateListIdx++;
+                        //_plateList.Add(plate);
+                        //_plateListIdx++;
 
                         // id is auto-increment value in DB
                         //dbManager.InsertPlate(plate.cam, plate.dateTime, plate.plateStr, plate.snapshot);
-                        dbManager.InsertPlateText(plate.cam, plate.dateTime, plate.plateStr, plate.snapshot); // file write test
+                        dbManager.InsertPlateText(camera.camID, DateTime.Now, plateStr, returnImage); // file write test
 
                         notifyColor = Color.LightGreen;
                         notifyCount = 0;
@@ -157,13 +158,19 @@ namespace GBU_Server_DotNet
                 playerMjpeg.Stop();
             }
 
-            timer.Change(Timeout.Infinite, Timeout.Infinite); // stop timer
-            timer.Dispose();
-            timer = null;
+            if (timer != null)
+            {
+                timer.Change(Timeout.Infinite, Timeout.Infinite); // stop timer
+                timer.Dispose();
+                timer = null;
+            }
 
-            anpr.ANPRStopThread();
-            anpr.ANPRDetected -= anpr_ANPRDetected;
-            anpr = null;
+            if (anpr != null)
+            {
+                anpr.ANPRStopThread();
+                anpr.ANPRDetected -= anpr_ANPRDetected;
+                anpr = null;
+            }
 
             notifyColor = Color.LightGray;
             notifyCount = 0;

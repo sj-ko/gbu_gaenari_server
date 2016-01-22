@@ -17,7 +17,7 @@ namespace GBU_Server_DotNet
         public MediaPlayer(string pluginPath)
         {
             string plugin_arg = "--plugin-path=" + pluginPath;
-            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", "--extraintf=logger", "--verbose=2", "--network-caching=200","--rtsp-tcp", "--rtsp-caching=0", plugin_arg };
+            string[] arguments = { "-I", "dummy", "--ignore-config", "--no-video-title", /*"--extraintf=logger", "--verbose=2",*/ "--network-caching=200", "--rtsp-tcp", "--rtsp-caching=0", "--loop", plugin_arg };
             libvlc_instance_ = LibVlcAPI.libvlc_new(arguments);
 
             libvlc_media_player_ = LibVlcAPI.libvlc_media_player_new(libvlc_instance_);

@@ -81,6 +81,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="cmanprdotnet8, Version=7.2.6.4, Culture=neutral, PublicKeyToken=70d355eafe3ed54c, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>

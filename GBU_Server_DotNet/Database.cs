@@ -90,9 +90,54 @@ namespace GBU_Server_DotNet
             return 0;
         }
 
+        public int SearchPlateForFile(int ch, string str, ref DataTable resultTable)
+        {
+            DataTable dt = new DataTable("mytable");
+            dt.Columns.Add("camId");
+            dt.Columns.Add("dateTime");
+            dt.Columns.Add("plate");
+            dt.Columns.Add("imageFilePath");
+
+            for (int i = 0; i < 20; i ++ )
+            {
+                if (ch != -1)
+                {
+                    i = ch;
+                }
+
+                string path = @"D:\anprtest\ch" + i;
+                if (File.Exists(path + "\\anprresult.txt"))
+                {
+                    string[] lines = System.IO.File.ReadAllLines(path + "\\anprresult.txt");
+                    foreach (string line in lines)
+                    {
+                        string[] values = line.Split(',');
+                        if (values[1].Contains(str))
+                        {
+                            DataRow row = dt.NewRow();
+                            row[0] = i;
+                            row[1] = values[2]; // datetime
+                            row[2] = values[1]; // plate
+                            row[3] = values[3]; // imagepath
+                            dt.Rows.Add(row);
+                        }
+                    }
+                }
+
+                if (ch != -1)
+                {
+                    break;
+                }
+            }
+
+            resultTable = dt;
+
+            return 0;
+        }
+
         public void InsertPlateText(int camid, DateTime datetime, string plate, Image image)
         {
-            string path = @"C:\anprtest\ch" + camid;
+            string path = @"D:\anprtest\ch" + camid;
             string logFileName = "\\anprresult.txt";
             string dtStr = String.Format("{0:yyyyMMdd_HHmmss}", datetime);
             string imageFileName = "\\Camera" + camid + "_" + plate + "_" + dtStr + ".jpg";

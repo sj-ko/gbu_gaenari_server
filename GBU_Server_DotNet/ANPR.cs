@@ -333,7 +333,7 @@ namespace GBU_Server_DotNet
 
         public bool popMedia(ref GBUVideoFrame frame)
         {
-            Console.WriteLine("ImageBuffer" + _imageBufferCount);
+            //Console.WriteLine("ImageBuffer" + _imageBufferCount);
             if (_imageBufferCount > 0)
             {
                 int frontindex = _imageBufferEmptyIndex - _imageBufferCount;

@@ -41,9 +41,9 @@ namespace GBU_Server_DotNet
             Search_listView1.FullRowSelect = true;
             Search_listView1.GridLines = true;
 
-            Search_listView1.Columns.Add("Camera ID", 90, HorizontalAlignment.Left);
-            Search_listView1.Columns.Add("Data & Time", 170, HorizontalAlignment.Left);
-            Search_listView1.Columns.Add("Plate String", 100, HorizontalAlignment.Left);
+            Search_listView1.Columns.Add("카메라", 90, HorizontalAlignment.Left);
+            Search_listView1.Columns.Add("시간", 170, HorizontalAlignment.Left);
+            Search_listView1.Columns.Add("차량번호", 100, HorizontalAlignment.Left);
 
             comboBox_Channel.SelectedIndex = 0;
         }
@@ -56,6 +56,9 @@ namespace GBU_Server_DotNet
         private void Search_button_search_Click(object sender, EventArgs e)
         {
             DataTable result = new DataTable();
+
+            _plateList.Clear();
+            _plateListIdx = 0;
 
             Search_listView1.Items.Clear();
             //dbManager.SearchPlate(search_textBox_search.Text, ref result);
@@ -103,6 +106,14 @@ namespace GBU_Server_DotNet
         private void comboBox_Channel_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void search_textBox_search_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Search_button_search_Click(sender, e);
+            }
         }
 
 

@@ -130,7 +130,7 @@ namespace GBU_Server_DotNet
                         //_plateListIdx++;
 
                         // id is auto-increment value in DB
-                        //dbManager.InsertPlate(plate.cam, plate.dateTime, plate.plateStr, plate.snapshot);
+                        dbManager.InsertPlate(camera.camID, DateTime.Now, plateStr, returnImage); // db write 
                         dbManager.InsertPlateText(camera.camID, DateTime.Now, plateStr, returnImage); // file write test
 
                         notifyColor = Color.LightGreen;

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{63F8FFFA-B799-4639-A85C-C8882CE58337}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GBU_Server_DotNet</RootNamespace>
     <AssemblyName>GBU_Server_DotNet</AssemblyName>
@@ -89,6 +89,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Windows\SysWOW64\gx\dotnet\cmanprdotnet8.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=4.9.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.4.10.0.0\lib\net45\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
     <Reference Include="gxdotnet8, Version=7.2.10.1, Culture=neutral, PublicKeyToken=3d92ae624958d2aa, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>

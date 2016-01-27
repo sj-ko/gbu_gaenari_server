@@ -98,7 +98,7 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("nchar_min", "6"); // "7"); // Default 8
             anpr.SetProperty("nchar_max", "9"); // Default 9
 
-            anpr.SetProperty("slope", "-4"); // "-5"); // Default -22
+            anpr.SetProperty("slope", "-10"); // "-5"); // Default -22
             anpr.SetProperty("slope_min", "-22"); //-20"); // Default -22
             anpr.SetProperty("slope_max", "34"); // "10"); // Default 34
 
@@ -507,10 +507,10 @@ namespace GBU_Server_DotNet
                     str = str.Replace("허", "하");
                 }*/
 
-                else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("마"))
+                /*else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("마"))
                 {
                     str = str.Replace("마", "하");
-                }
+                }*/
 
             }
 

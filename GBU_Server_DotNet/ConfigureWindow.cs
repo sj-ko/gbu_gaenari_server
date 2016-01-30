@@ -28,8 +28,9 @@ namespace GBU_Server_DotNet
 
             Configure_textbox_camID.Text = Convert.ToString(form.camera.camID, 10);
             Configure_textbox_rtspurl.Text = form.camera.camURL;
+            Configure_textbox_savepath.Text = form.camera.savePath;
 
-            _cropRect = new Rectangle((int)(form.cropX * downRatio), (int)(form.cropY * downRatio), (int)(form.cropWidth * downRatio), (int)(form.cropHeight * downRatio));
+            _cropRect = new Rectangle((int)(form.camera.cropX * downRatio), (int)(form.camera.cropY * downRatio), (int)(form.camera.cropWidth * downRatio), (int)(form.camera.cropHeight * downRatio));
             Configure_croparea.Invalidate();
 
             Configure_UpDown_CropX.Value = _cropRect.X;
@@ -45,11 +46,12 @@ namespace GBU_Server_DotNet
 
             form.camera.camID = Convert.ToInt32(Configure_textbox_camID.Text, 10);
             form.camera.camURL = Configure_textbox_rtspurl.Text;
+            form.camera.savePath = Configure_textbox_savepath.Text;
 
-            form.cropX = (int)(_cropRect.X * upRatio);
-            form.cropY = (int)(_cropRect.Y * upRatio);
-            form.cropWidth = (int)(_cropRect.Width * upRatio);
-            form.cropHeight = (int)(_cropRect.Height * upRatio);
+            form.camera.cropX = (int)(_cropRect.X * upRatio);
+            form.camera.cropY = (int)(_cropRect.Y * upRatio);
+            form.camera.cropWidth = (int)(_cropRect.Width * upRatio);
+            form.camera.cropHeight = (int)(_cropRect.Height * upRatio);
 
             this.Close();
         }

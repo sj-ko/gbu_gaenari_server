@@ -45,17 +45,22 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.Configure_groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Configure_groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Configure_textbox_savepath = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_croparea)).BeginInit();
             this.Configure_groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropX)).BeginInit();
+            this.Configure_groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Configure_button_OK
             // 
-            this.Configure_button_OK.Location = new System.Drawing.Point(353, 457);
+            this.Configure_button_OK.Location = new System.Drawing.Point(845, 469);
             this.Configure_button_OK.Name = "Configure_button_OK";
             this.Configure_button_OK.Size = new System.Drawing.Size(75, 23);
             this.Configure_button_OK.TabIndex = 0;
@@ -65,7 +70,7 @@
             // 
             // Configure_button_Cancel
             // 
-            this.Configure_button_Cancel.Location = new System.Drawing.Point(444, 457);
+            this.Configure_button_Cancel.Location = new System.Drawing.Point(926, 469);
             this.Configure_button_Cancel.Name = "Configure_button_Cancel";
             this.Configure_button_Cancel.Size = new System.Drawing.Size(75, 23);
             this.Configure_button_Cancel.TabIndex = 1;
@@ -254,11 +259,49 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "CropX";
             // 
+            // Configure_groupBox3
+            // 
+            this.Configure_groupBox3.Controls.Add(this.Configure_textbox_savepath);
+            this.Configure_groupBox3.Controls.Add(this.label7);
+            this.Configure_groupBox3.Location = new System.Drawing.Point(547, 12);
+            this.Configure_groupBox3.Name = "Configure_groupBox3";
+            this.Configure_groupBox3.Size = new System.Drawing.Size(476, 193);
+            this.Configure_groupBox3.TabIndex = 8;
+            this.Configure_groupBox3.TabStop = false;
+            this.Configure_groupBox3.Text = "저장 경로";
+            // 
+            // Configure_groupBox4
+            // 
+            this.Configure_groupBox4.Location = new System.Drawing.Point(547, 230);
+            this.Configure_groupBox4.Name = "Configure_groupBox4";
+            this.Configure_groupBox4.Size = new System.Drawing.Size(476, 193);
+            this.Configure_groupBox4.TabIndex = 9;
+            this.Configure_groupBox4.TabStop = false;
+            this.Configure_groupBox4.Text = "데이터베이스 연결 설정";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(18, 36);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 12);
+            this.label7.TabIndex = 10;
+            this.label7.Text = "경로";
+            // 
+            // Configure_textbox_savepath
+            // 
+            this.Configure_textbox_savepath.Location = new System.Drawing.Point(117, 33);
+            this.Configure_textbox_savepath.Name = "Configure_textbox_savepath";
+            this.Configure_textbox_savepath.Size = new System.Drawing.Size(337, 21);
+            this.Configure_textbox_savepath.TabIndex = 10;
+            // 
             // ConfigureWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(531, 490);
+            this.ClientSize = new System.Drawing.Size(1030, 500);
+            this.Controls.Add(this.Configure_groupBox4);
+            this.Controls.Add(this.Configure_groupBox3);
             this.Controls.Add(this.Configure_textbox_camID);
             this.Controls.Add(this.Configure_textbox_rtspurl);
             this.Controls.Add(this.label2);
@@ -280,6 +323,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropX)).EndInit();
+            this.Configure_groupBox3.ResumeLayout(false);
+            this.Configure_groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,5 +349,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox Configure_groupBox3;
+        private System.Windows.Forms.GroupBox Configure_groupBox4;
+        private System.Windows.Forms.TextBox Configure_textbox_savepath;
+        private System.Windows.Forms.Label label7;
     }
 }

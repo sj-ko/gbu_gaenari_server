@@ -13,7 +13,7 @@ namespace GBU_Server_DotNet
 {
     public partial class SearchWindow : Form
     {
-        private Database dbManager = new Database();
+        private Database dbManager;
 
         public struct PLATE_FOUND
         {
@@ -46,6 +46,8 @@ namespace GBU_Server_DotNet
             Search_listView1.Columns.Add("차량번호", 100, HorizontalAlignment.Left);
 
             comboBox_Channel.SelectedIndex = 0;
+
+            dbManager = form.dbManager;
         }
 
         private void Search_button_OK_Click(object sender, EventArgs e)

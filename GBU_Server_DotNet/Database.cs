@@ -21,8 +21,21 @@ using FirebirdSql.Data.FirebirdClient;
 
 namespace GBU_Server_DotNet
 {
-    class Database
+    public class Database
     {
+        private string _savepath = "";
+        public string SavePath
+        {
+            get
+            {
+                return _savepath;
+            }
+            set
+            {
+                _savepath = value;
+            }
+        }
+
 #if __USE_FIREBIRD__
         private string strConn = "User=sysdba;" +
                                 "Password=masterkey;" +
@@ -163,7 +176,7 @@ namespace GBU_Server_DotNet
                     i = ch;
                 }
 
-                string path = @"D:\anprtest\ch" + i;
+                string path = _savepath + "\\ch" + i;
                 if (File.Exists(path + "\\anprresult.txt"))
                 {
                     string[] lines = System.IO.File.ReadAllLines(path + "\\anprresult.txt");
@@ -195,7 +208,7 @@ namespace GBU_Server_DotNet
 
         public void InsertPlateText(int camid, DateTime datetime, string plate, Image image)
         {
-            string path = @"D:\anprtest\ch" + camid;
+            string path = _savepath + "\\ch" + camid;
             string logFileName = "\\anprresult.txt";
             string dtStr = String.Format("{0:yyyyMMdd_HHmmss}", datetime);
             string imageFileName = "\\Camera" + camid + "_" + plate + "_" + dtStr + ".jpg";

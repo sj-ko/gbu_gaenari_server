@@ -122,6 +122,7 @@
     <Compile Include="ANPR.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="FileServer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

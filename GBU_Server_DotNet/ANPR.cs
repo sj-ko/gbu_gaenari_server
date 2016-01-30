@@ -98,7 +98,7 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("nchar_min", "6"); // "7"); // Default 8
             anpr.SetProperty("nchar_max", "9"); // Default 9
 
-            anpr.SetProperty("slope", "-10"); // "-5"); // Default -22
+            anpr.SetProperty("slope", "-5"); // "-5"); // Default -22
             anpr.SetProperty("slope_min", "-22"); //-20"); // Default -22
             anpr.SetProperty("slope_max", "34"); // "10"); // Default 34
 

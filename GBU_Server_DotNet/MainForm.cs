@@ -24,6 +24,8 @@ namespace GBU_Server_DotNet
         private ANPR anpr;
         private System.Threading.Timer timer;
         private AutoResetEvent timerEvent;
+        private double lastPlayTime;
+        private int mediaMonitorCount;
 
         // for MJPEG
         private MediaPlayer_MJPEG playerMjpeg;
@@ -41,12 +43,13 @@ namespace GBU_Server_DotNet
         //private List<PLATE_FOUND> _plateList = new List<PLATE_FOUND>();
         //private int _plateListIdx = 0;
 
-        private Database dbManager = new Database();
+        public Database dbManager = new Database();
 
-        public int cropX = 0;
-        public int cropY = 0;
-        public int cropWidth = 320;
-        public int cropHeight = 180;
+        //public int cropX = 0;
+        //public int cropY = 0;
+        //public int cropWidth = 320;
+        //public int cropHeight = 180;
+        //public string savepath = @"D:\anprtest";
 
         public Graphics formGraphics;
         public Rectangle notifyBorder;
@@ -77,6 +80,8 @@ namespace GBU_Server_DotNet
             UpdateFormUIValue();
 
             formGraphics = this.CreateGraphics();
+
+            dbManager.SavePath = camera.savePath;
         }
 
         private void InitCamera()
@@ -93,6 +98,8 @@ namespace GBU_Server_DotNet
         private void camera_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateFormUIValue();
+
+            dbManager.SavePath = camera.savePath;
         }
 
         private void Btn_Connect_Click(object sender, EventArgs e)
@@ -146,6 +153,35 @@ namespace GBU_Server_DotNet
             
         }
 
+        private void Play()
+        {
+            anpr = new ANPR();
+            anpr.camID = camera.camID;
+
+            string path = camera.camURL;
+            //string path = @"C:\NetDEVSDK\Record\netDev_04.ts";
+            player = new MediaPlayer(".\\plugins");
+
+            player.SetRenderWindow((int)this.panel1.Handle);
+            player.PlayStream(path, 1920, 1080);
+            //player.PlayFile(path);
+
+#if TEST_PAINTEVENT
+            panel1.Paint += panel1_Paint; // change to timer
+#else
+            //
+            timerEvent = new AutoResetEvent(true);
+            timer = new System.Threading.Timer(MediaTimerCallBack, null, 100, 1000);
+            anpr.ANPRRunThread();
+            anpr.ANPRDetected += anpr_ANPRDetected;
+#endif
+
+            connectToolStripMenuItem.Enabled = false;
+            disconnectToolStripMenuItem.Enabled = true;
+
+            notifyColor = Color.Red;
+        }
+
         private void Stop()
         {
             if (player != null)
@@ -175,6 +211,9 @@ namespace GBU_Server_DotNet
             notifyColor = Color.LightGray;
             notifyCount = 0;
             DrawBorder();
+
+            lastPlayTime = 0;
+            mediaMonitorCount = 0;
 
             //_plateListIdx = 0;
             //_plateList.Clear();
@@ -213,7 +252,7 @@ namespace GBU_Server_DotNet
                         {
                             Bitmap bmp = new Bitmap(this.panel1.Width, this.panel1.Height);
 
-                            bmp = (Bitmap)ImageCapture.DrawToImage(this.panel1, cropX, cropY, cropWidth, cropHeight); // 108, 110, 800, 450);
+                            bmp = (Bitmap)ImageCapture.DrawToImage(this.panel1, camera.cropX, camera.cropY, camera.cropWidth, camera.cropHeight); // 108, 110, 800, 450);
                             //bmp = ResizeBitmap(bmp, 480, 270); // size of anpr input image
                             anpr.pushMedia(bmp, bmp.Width, bmp.Height);
                             bmp.Dispose();
@@ -234,6 +273,33 @@ namespace GBU_Server_DotNet
                                 }
 
                             }
+
+                            // get libvlc media state and reconnect
+                            if (player != null)
+                            {
+                                double playtime = player.GetPlayTime();
+                                //Console.WriteLine("libVlc playtime " + playtime + " lastplaytime " + lastPlayTime + " mediaMonitorCount " + mediaMonitorCount);
+                                if (lastPlayTime == playtime)
+                                {
+                                    mediaMonitorCount++;
+                                }
+                                else
+                                {
+                                    mediaMonitorCount = 0;
+                                }
+
+                                if (mediaMonitorCount > 10)
+                                {
+                                    // reconnect
+                                    Stop();
+                                    Play();
+                                }
+                                else
+                                {
+                                    lastPlayTime = playtime;
+                                }
+                            }
+
                         }
                     }
                 ));
@@ -287,31 +353,7 @@ namespace GBU_Server_DotNet
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            anpr = new ANPR();
-            anpr.camID = camera.camID;
-
-            string path = camera.camURL;
-            //string path = @"C:\NetDEVSDK\Record\netDev_04.ts";
-            player = new MediaPlayer(".\\plugins");
-
-            player.SetRenderWindow((int)this.panel1.Handle);
-            player.PlayStream(path, 1920, 1080);
-            //player.PlayFile(path);
-
-#if TEST_PAINTEVENT
-            panel1.Paint += panel1_Paint; // change to timer
-#else
-            //
-            timerEvent = new AutoResetEvent(true);
-            timer = new System.Threading.Timer(MediaTimerCallBack, null, 100, 1000);
-            anpr.ANPRRunThread();
-            anpr.ANPRDetected += anpr_ANPRDetected;
-#endif
-
-            connectToolStripMenuItem.Enabled = false;
-            disconnectToolStripMenuItem.Enabled = true;
-
-            notifyColor = Color.Red;
+            Play();
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)

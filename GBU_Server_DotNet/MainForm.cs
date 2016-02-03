@@ -155,7 +155,7 @@ namespace GBU_Server_DotNet
 
         private void Play()
         {
-            anpr = new ANPR();
+            anpr = new ANPR(camera.timeout, camera.countForPass);
             anpr.camID = camera.camID;
 
             string path = camera.camURL;
@@ -171,7 +171,7 @@ namespace GBU_Server_DotNet
 #else
             //
             timerEvent = new AutoResetEvent(true);
-            timer = new System.Threading.Timer(MediaTimerCallBack, null, 100, 1000);
+            timer = new System.Threading.Timer(MediaTimerCallBack, null, 100, camera.timeout);
             anpr.ANPRRunThread();
             anpr.ANPRDetected += anpr_ANPRDetected;
 #endif
@@ -253,7 +253,11 @@ namespace GBU_Server_DotNet
                             Bitmap bmp = new Bitmap(this.panel1.Width, this.panel1.Height);
 
                             bmp = (Bitmap)ImageCapture.DrawToImage(this.panel1, camera.cropX, camera.cropY, camera.cropWidth, camera.cropHeight); // 108, 110, 800, 450);
-                            //bmp = ResizeBitmap(bmp, 480, 270); // size of anpr input image
+                            if (camera.isResize)
+                            {
+                                Console.WriteLine("resize!");
+                                bmp = ResizeBitmap(bmp, 480, 270); // size of anpr input image
+                            }
                             anpr.pushMedia(bmp, bmp.Width, bmp.Height);
                             bmp.Dispose();
 

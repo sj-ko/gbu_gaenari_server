@@ -19,6 +19,10 @@ namespace GBU_Server_DotNet
 
         private string _savePath;
 
+        private bool _isResize;
+        private int _timeout;
+        private int _countForPass;
+
         public int camID
         {
             get
@@ -130,6 +134,54 @@ namespace GBU_Server_DotNet
             }
         }
 
+        public bool isResize
+        {
+            get
+            {
+                return _isResize;
+            }
+            set
+            {
+                if (value != _isResize)
+                {
+                    _isResize = value;
+                    NotifyPropertyChanged("isResize");
+                }
+            }
+        }
+
+        public int timeout
+        {
+            get
+            {
+                return _timeout;
+            }
+            set
+            {
+                if (value != _timeout)
+                {
+                    _timeout = value;
+                    NotifyPropertyChanged("timeout");
+                }
+            }
+        }
+
+        public int countForPass
+        {
+            get
+            {
+                return _countForPass;
+            }
+            set
+            {
+                if (value != _countForPass)
+                {
+                    _countForPass = value;
+                    NotifyPropertyChanged("countForPass");
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // This method is called by the Set accessor of each property.
@@ -154,6 +206,10 @@ namespace GBU_Server_DotNet
             _cropWidth = 320;
             _cropHeight = 180;
             _savePath = @"D:\anprtest";
+
+            _isResize = false;
+            _timeout = 1000;
+            _countForPass = 5;
         }
 
         public Camera(int id)
@@ -167,6 +223,10 @@ namespace GBU_Server_DotNet
             _cropWidth = 320;
             _cropHeight = 180;
             _savePath = @"D:\anprtest";
+
+            _isResize = false;
+            _timeout = 1000;
+            _countForPass = 5;
         }
 
         public Camera(int id, string url)
@@ -179,6 +239,10 @@ namespace GBU_Server_DotNet
             _cropWidth = 320;
             _cropHeight = 180;
             _savePath = @"D:\anprtest";
+
+            _isResize = false;
+            _timeout = 1000;
+            _countForPass = 5;
         }
 
     }

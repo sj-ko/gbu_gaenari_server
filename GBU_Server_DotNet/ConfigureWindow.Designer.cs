@@ -46,9 +46,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.Configure_groupBox3 = new System.Windows.Forms.GroupBox();
-            this.Configure_groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.Configure_textbox_savepath = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Configure_groupBox4 = new System.Windows.Forms.GroupBox();
+            this.Configure_checkBox_isResize = new System.Windows.Forms.CheckBox();
+            this.Configure_textbox_countForPass = new System.Windows.Forms.TextBox();
+            this.Configure_textbox_timeout = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Configure_button_load = new System.Windows.Forms.Button();
+            this.Configure_button_save = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_croparea)).BeginInit();
             this.Configure_groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropHeight)).BeginInit();
@@ -56,6 +63,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropX)).BeginInit();
             this.Configure_groupBox3.SuspendLayout();
+            this.Configure_groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // Configure_button_OK
@@ -270,14 +278,12 @@
             this.Configure_groupBox3.TabStop = false;
             this.Configure_groupBox3.Text = "저장 경로";
             // 
-            // Configure_groupBox4
+            // Configure_textbox_savepath
             // 
-            this.Configure_groupBox4.Location = new System.Drawing.Point(547, 230);
-            this.Configure_groupBox4.Name = "Configure_groupBox4";
-            this.Configure_groupBox4.Size = new System.Drawing.Size(476, 193);
-            this.Configure_groupBox4.TabIndex = 9;
-            this.Configure_groupBox4.TabStop = false;
-            this.Configure_groupBox4.Text = "데이터베이스 연결 설정";
+            this.Configure_textbox_savepath.Location = new System.Drawing.Point(117, 33);
+            this.Configure_textbox_savepath.Name = "Configure_textbox_savepath";
+            this.Configure_textbox_savepath.Size = new System.Drawing.Size(337, 21);
+            this.Configure_textbox_savepath.TabIndex = 10;
             // 
             // label7
             // 
@@ -288,18 +294,89 @@
             this.label7.TabIndex = 10;
             this.label7.Text = "경로";
             // 
-            // Configure_textbox_savepath
+            // Configure_groupBox4
             // 
-            this.Configure_textbox_savepath.Location = new System.Drawing.Point(117, 33);
-            this.Configure_textbox_savepath.Name = "Configure_textbox_savepath";
-            this.Configure_textbox_savepath.Size = new System.Drawing.Size(337, 21);
-            this.Configure_textbox_savepath.TabIndex = 10;
+            this.Configure_groupBox4.Controls.Add(this.Configure_checkBox_isResize);
+            this.Configure_groupBox4.Controls.Add(this.Configure_textbox_countForPass);
+            this.Configure_groupBox4.Controls.Add(this.Configure_textbox_timeout);
+            this.Configure_groupBox4.Controls.Add(this.label9);
+            this.Configure_groupBox4.Controls.Add(this.label8);
+            this.Configure_groupBox4.Location = new System.Drawing.Point(547, 230);
+            this.Configure_groupBox4.Name = "Configure_groupBox4";
+            this.Configure_groupBox4.Size = new System.Drawing.Size(476, 193);
+            this.Configure_groupBox4.TabIndex = 9;
+            this.Configure_groupBox4.TabStop = false;
+            this.Configure_groupBox4.Text = "번호판 인식 설정";
+            // 
+            // Configure_checkBox_isResize
+            // 
+            this.Configure_checkBox_isResize.AutoSize = true;
+            this.Configure_checkBox_isResize.Location = new System.Drawing.Point(72, 130);
+            this.Configure_checkBox_isResize.Name = "Configure_checkBox_isResize";
+            this.Configure_checkBox_isResize.Size = new System.Drawing.Size(128, 16);
+            this.Configure_checkBox_isResize.TabIndex = 15;
+            this.Configure_checkBox_isResize.Text = "이미지 사이즈 조정";
+            this.Configure_checkBox_isResize.UseVisualStyleBackColor = true;
+            // 
+            // Configure_textbox_countForPass
+            // 
+            this.Configure_textbox_countForPass.Location = new System.Drawing.Point(133, 64);
+            this.Configure_textbox_countForPass.Name = "Configure_textbox_countForPass";
+            this.Configure_textbox_countForPass.Size = new System.Drawing.Size(129, 21);
+            this.Configure_textbox_countForPass.TabIndex = 14;
+            // 
+            // Configure_textbox_timeout
+            // 
+            this.Configure_textbox_timeout.Location = new System.Drawing.Point(133, 37);
+            this.Configure_textbox_timeout.Name = "Configure_textbox_timeout";
+            this.Configure_textbox_timeout.Size = new System.Drawing.Size(129, 21);
+            this.Configure_textbox_timeout.TabIndex = 11;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(70, 73);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(57, 12);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "검출 횟수";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(76, 46);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(51, 12);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "Timeout";
+            // 
+            // Configure_button_load
+            // 
+            this.Configure_button_load.Location = new System.Drawing.Point(12, 469);
+            this.Configure_button_load.Name = "Configure_button_load";
+            this.Configure_button_load.Size = new System.Drawing.Size(129, 23);
+            this.Configure_button_load.TabIndex = 10;
+            this.Configure_button_load.Text = "설정 파일 불러오기";
+            this.Configure_button_load.UseVisualStyleBackColor = true;
+            this.Configure_button_load.Click += new System.EventHandler(this.Configure_button_load_Click);
+            // 
+            // Configure_button_save
+            // 
+            this.Configure_button_save.Location = new System.Drawing.Point(147, 469);
+            this.Configure_button_save.Name = "Configure_button_save";
+            this.Configure_button_save.Size = new System.Drawing.Size(129, 23);
+            this.Configure_button_save.TabIndex = 11;
+            this.Configure_button_save.Text = "설정 파일 저장";
+            this.Configure_button_save.UseVisualStyleBackColor = true;
+            this.Configure_button_save.Click += new System.EventHandler(this.Configure_button_save_Click);
             // 
             // ConfigureWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1030, 500);
+            this.Controls.Add(this.Configure_button_save);
+            this.Controls.Add(this.Configure_button_load);
             this.Controls.Add(this.Configure_groupBox4);
             this.Controls.Add(this.Configure_groupBox3);
             this.Controls.Add(this.Configure_textbox_camID);
@@ -325,6 +402,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropX)).EndInit();
             this.Configure_groupBox3.ResumeLayout(false);
             this.Configure_groupBox3.PerformLayout();
+            this.Configure_groupBox4.ResumeLayout(false);
+            this.Configure_groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,5 +432,12 @@
         private System.Windows.Forms.GroupBox Configure_groupBox4;
         private System.Windows.Forms.TextBox Configure_textbox_savepath;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox Configure_checkBox_isResize;
+        private System.Windows.Forms.TextBox Configure_textbox_countForPass;
+        private System.Windows.Forms.TextBox Configure_textbox_timeout;
+        private System.Windows.Forms.Button Configure_button_load;
+        private System.Windows.Forms.Button Configure_button_save;
     }
 }

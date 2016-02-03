@@ -16,7 +16,7 @@ namespace GBU_Server_DotNet
     static class Constants
     {
         public const int CANDIDATE_REMOVE_TIME = 600000; //60000; // ms
-        public const int CANDIDATE_COUNT_FOR_PASS = 5; // default is 3, for gas station stop is 20
+        //public const int CANDIDATE_COUNT_FOR_PASS = 5; // default is 3, for gas station stop is 20
         public const int MAX_IMAGE_BUFFER = 30;
     }
 
@@ -33,6 +33,8 @@ namespace GBU_Server_DotNet
                                            "고","노","도","로","모","보","소","오","조",
                                            "구","누","두","루","무","부","수","우","주",
                                            "하","허","호","배"};
+
+        public int CANDIDATE_COUNT_FOR_PASS = 5; // default is 3, for gas station stop is 20
 
         public struct PLATE_CANDIDATE
         {
@@ -83,6 +85,15 @@ namespace GBU_Server_DotNet
             ANPRThread = new Thread(ANPRThreadFunction);
         }
 
+        public ANPR(int timeout, int countForPass)
+        {
+            initANPR(_anpr, timeout);
+
+            CANDIDATE_COUNT_FOR_PASS = countForPass;
+
+            ANPRThread = new Thread(ANPRThreadFunction);
+        }
+
         ~ANPR()
         {
             ANPRStopThread();
@@ -98,7 +109,7 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("nchar_min", "6"); // "7"); // Default 8
             anpr.SetProperty("nchar_max", "9"); // Default 9
 
-            anpr.SetProperty("slope", "-5"); // "-5"); // Default -22
+            anpr.SetProperty("slope", "9"); // "-5"); // Default -22
             anpr.SetProperty("slope_min", "-22"); //-20"); // Default -22
             anpr.SetProperty("slope_max", "34"); // "10"); // Default 34
 
@@ -107,6 +118,44 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("slant_max", "27"); // "10"); // Default 27
 
             anpr.SetProperty("timeout", "500"); // default 100 
+
+            anpr.SetProperty("contrast_min", "10");
+            anpr.SetProperty("xtoyres", "0");
+            anpr.SetProperty("colortype", "0");
+            anpr.SetProperty("gaptospace", "0");
+            anpr.SetProperty("unicode_in_text", "0");
+            anpr.SetProperty("general", "1");
+            anpr.SetProperty("depth", "137");
+            anpr.SetProperty("adapt_environment", "1");
+            anpr.SetProperty("unit", "1");
+            anpr.SetProperty("analyzecolors", "0");
+            anpr.SetProperty("whitebalance", "100");
+            /*anpr.SetProperty("posfreqhalflife", "0");
+            anpr.SetProperty("posfreqweight", "61");
+            anpr.SetProperty("posfreqhistxs", "16");
+            anpr.SetProperty("posfreqhistys", "16");
+            anpr.SetProperty("posfreq", "1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000");*/
+        }
+
+        private void initANPR(cmAnpr anpr, int timeout)
+        {
+            anpr.SetProperty("anprname", "cmanpr-7.2.7.68:kor");
+            anpr.SetProperty("size", "15"); // default 25  (20-->15)
+            anpr.SetProperty("size_min", "6"); //"8"); // Default 6
+            anpr.SetProperty("size_max", "93"); //"40"); // Default 93
+
+            anpr.SetProperty("nchar_min", "6"); // "7"); // Default 8
+            anpr.SetProperty("nchar_max", "9"); // Default 9
+
+            anpr.SetProperty("slope", "9"); // "-5"); // Default -22
+            anpr.SetProperty("slope_min", "-22"); //-20"); // Default -22
+            anpr.SetProperty("slope_max", "34"); // "10"); // Default 34
+
+            anpr.SetProperty("slant", "10"); // "0"); // Default 10
+            anpr.SetProperty("slant_min", "-55"); // "-10"); // Default -55
+            anpr.SetProperty("slant_max", "27"); // "10"); // Default 27
+
+            anpr.SetProperty("timeout", timeout); // default 100 
 
             anpr.SetProperty("contrast_min", "10");
             anpr.SetProperty("xtoyres", "0");
@@ -192,7 +241,7 @@ namespace GBU_Server_DotNet
                                     plate_candidates.RemoveAt(j);
                                     plate_candidates.Add(modified);
 
-                                    if (modified.foundCount == Constants.CANDIDATE_COUNT_FOR_PASS)
+                                    if (modified.foundCount == CANDIDATE_COUNT_FOR_PASS)
                                     {
                                         // Announce Event
                                         //SetLog(cropregion, plate_candidates[j].plate_string, TEXT("msg"));
@@ -463,54 +512,63 @@ namespace GBU_Server_DotNet
             else
             {
                 // 2006 yr. (12-Kr-1234)
-
-                // 호
-                if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("오"))
+                // Adjust for only White plate (type 8203,8204)
+                if (_anpr.GetType() == 8203 || _anpr.GetType() == 8204)
                 {
-                    str = str.Replace("오", "호");
+                    // 호
+                    if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("오"))
+                    {
+                        str = str.Replace("오", "호");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("로"))
+                    {
+                        str = str.Replace("로", "호");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("자"))
+                    {
+                        str = str.Replace("자", "호");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("소"))
+                    {
+                        str = str.Replace("소", "호");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("보"))
+                    {
+                        str = str.Replace("보", "호");
+                    }
+
+                    // 하
+                    // '아' are reserved for business vehicles. (Loca-12-Kr-1234)
+                    else if (/*_anpr.GetCharacter(2).confidence < 95 &&*/ str.Substring(2, 1).Equals("아"))
+                    {
+                        str = str.Replace("아", "하");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("라"))
+                    {
+                        str = str.Replace("라", "하");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("허"))
+                    {
+                        str = str.Replace("허", "하");
+                    }
+
+                    /*else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("마"))
+                    {
+                        str = str.Replace("마", "하");
+                    }*/
+
+                    // 로
+                    /*else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("고"))
+                    {
+                        str = str.Replace("고", "로");
+                    }*/
                 }
-
-                else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("로"))
-                {
-                    str = str.Replace("로", "호");
-                }
-
-                else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("자"))
-                {
-                    str = str.Replace("자", "호");
-                }
-
-                else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("소"))
-                {
-                    str = str.Replace("소", "호");
-                }
-
-                else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("보"))
-                {
-                    str = str.Replace("보", "호");
-                }
-                
-                // 하
-                // '아' are reserved for business vehicles. (Loca-12-Kr-1234)
-                else if (/*_anpr.GetCharacter(2).confidence < 95 &&*/ str.Substring(2, 1).Equals("아"))
-                {
-                    str = str.Replace("아", "하");
-                }
-
-                else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("라"))
-                {
-                    str = str.Replace("라", "하");
-                }
-
-                /*else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("허"))
-                {
-                    str = str.Replace("허", "하");
-                }*/
-
-                /*else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("마"))
-                {
-                    str = str.Replace("마", "하");
-                }*/
 
             }
 

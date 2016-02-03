@@ -114,6 +114,7 @@ namespace GBU_Server_DotNet
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString() + "::" + e.StackTrace);
+                conn.Close();
             }
 
             return 0;
@@ -157,6 +158,7 @@ namespace GBU_Server_DotNet
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString() + "::" + e.StackTrace);
+                conn.Close();
             }
             return 0;
         }

@@ -56,6 +56,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.Configure_button_load = new System.Windows.Forms.Button();
             this.Configure_button_save = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.Configure_textbox_size = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_croparea)).BeginInit();
             this.Configure_groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Configure_UpDown_CropHeight)).BeginInit();
@@ -296,6 +299,9 @@
             // 
             // Configure_groupBox4
             // 
+            this.Configure_groupBox4.Controls.Add(this.label11);
+            this.Configure_groupBox4.Controls.Add(this.Configure_textbox_size);
+            this.Configure_groupBox4.Controls.Add(this.label10);
             this.Configure_groupBox4.Controls.Add(this.Configure_checkBox_isResize);
             this.Configure_groupBox4.Controls.Add(this.Configure_textbox_countForPass);
             this.Configure_groupBox4.Controls.Add(this.Configure_textbox_timeout);
@@ -311,7 +317,7 @@
             // Configure_checkBox_isResize
             // 
             this.Configure_checkBox_isResize.AutoSize = true;
-            this.Configure_checkBox_isResize.Location = new System.Drawing.Point(72, 130);
+            this.Configure_checkBox_isResize.Location = new System.Drawing.Point(72, 157);
             this.Configure_checkBox_isResize.Name = "Configure_checkBox_isResize";
             this.Configure_checkBox_isResize.Size = new System.Drawing.Size(128, 16);
             this.Configure_checkBox_isResize.TabIndex = 15;
@@ -369,6 +375,31 @@
             this.Configure_button_save.Text = "설정 파일 저장";
             this.Configure_button_save.UseVisualStyleBackColor = true;
             this.Configure_button_save.Click += new System.EventHandler(this.Configure_button_save_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(74, 101);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 12);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "글자크기";
+            // 
+            // Configure_textbox_size
+            // 
+            this.Configure_textbox_size.Location = new System.Drawing.Point(133, 92);
+            this.Configure_textbox_size.Name = "Configure_textbox_size";
+            this.Configure_textbox_size.Size = new System.Drawing.Size(129, 21);
+            this.Configure_textbox_size.TabIndex = 17;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(76, 129);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(187, 12);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "(상기 설정은 카메라 재연결 필요)";
             // 
             // ConfigureWindow
             // 
@@ -439,5 +470,8 @@
         private System.Windows.Forms.TextBox Configure_textbox_timeout;
         private System.Windows.Forms.Button Configure_button_load;
         private System.Windows.Forms.Button Configure_button_save;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox Configure_textbox_size;
+        private System.Windows.Forms.Label label10;
     }
 }

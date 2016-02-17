@@ -72,13 +72,13 @@
             this.connectToolStripMenuItem,
             this.disconnectToolStripMenuItem});
             this.cameraListToolStripMenuItem.Name = "cameraListToolStripMenuItem";
-            this.cameraListToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cameraListToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.cameraListToolStripMenuItem.Text = "카메라";
             // 
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.connectToolStripMenuItem.Text = "연결";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
             // 
@@ -86,21 +86,21 @@
             // 
             this.disconnectToolStripMenuItem.Enabled = false;
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.disconnectToolStripMenuItem.Text = "연결 끊기";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
             // configureToolStripMenuItem
             // 
             this.configureToolStripMenuItem.Name = "configureToolStripMenuItem";
-            this.configureToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.configureToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.configureToolStripMenuItem.Text = "설정";
             this.configureToolStripMenuItem.Click += new System.EventHandler(this.configureToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exitToolStripMenuItem.Text = "종료";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -115,7 +115,7 @@
             // searchPlateToolStripMenuItem
             // 
             this.searchPlateToolStripMenuItem.Name = "searchPlateToolStripMenuItem";
-            this.searchPlateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.searchPlateToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.searchPlateToolStripMenuItem.Text = "차량 검색";
             this.searchPlateToolStripMenuItem.Click += new System.EventHandler(this.searchPlateToolStripMenuItem_Click);
             // 
@@ -130,7 +130,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.aboutToolStripMenuItem.Text = "정보";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 

@@ -55,6 +55,7 @@ namespace GBU_Server_DotNet
             Configure_textbox_timeout.Text = Convert.ToString(cam.timeout, 10);
             Configure_textbox_countForPass.Text = Convert.ToString(cam.countForPass, 10);
             Configure_checkBox_isResize.Checked = cam.isResize;
+            Configure_textbox_size.Text = Convert.ToString(cam.size, 10);
         }
 
         private void Configure_button_OK_Click(object sender, EventArgs e)
@@ -74,6 +75,7 @@ namespace GBU_Server_DotNet
             form.camera.timeout = Convert.ToInt32(Configure_textbox_timeout.Text);
             form.camera.countForPass = Convert.ToInt32(Configure_textbox_countForPass.Text);
             form.camera.isResize = Configure_checkBox_isResize.Checked;
+            form.camera.size = Convert.ToInt32(Configure_textbox_size.Text);
 
             this.Close();
         }
@@ -227,6 +229,7 @@ namespace GBU_Server_DotNet
                 camera.timeout = Convert.ToInt32(Configure_textbox_timeout.Text);
                 camera.countForPass = Convert.ToInt32(Configure_textbox_countForPass.Text);
                 camera.isResize = Configure_checkBox_isResize.Checked;
+                camera.size = Convert.ToInt32(Configure_textbox_size.Text);
                 
                 System.IO.FileStream fs = (System.IO.FileStream)dialog.OpenFile();
                 XmlSerializer formatter = new XmlSerializer(camera.GetType());

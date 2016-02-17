@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace GBU_Server_DotNet
 {
@@ -22,6 +23,7 @@ namespace GBU_Server_DotNet
         private bool _isResize;
         private int _timeout;
         private int _countForPass;
+        private int _size;
 
         public int camID
         {
@@ -182,6 +184,22 @@ namespace GBU_Server_DotNet
             }
         }
 
+        public int size
+        {
+            get
+            {
+                return _size;
+            }
+            set
+            {
+                if (value != _size)
+                {
+                    _size = value;
+                    NotifyPropertyChanged("size");
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // This method is called by the Set accessor of each property.
@@ -210,6 +228,8 @@ namespace GBU_Server_DotNet
             _isResize = false;
             _timeout = 1000;
             _countForPass = 5;
+
+            _size = 25;
         }
 
         public Camera(int id)
@@ -227,6 +247,8 @@ namespace GBU_Server_DotNet
             _isResize = false;
             _timeout = 1000;
             _countForPass = 5;
+
+            _size = 25;
         }
 
         public Camera(int id, string url)
@@ -243,6 +265,45 @@ namespace GBU_Server_DotNet
             _isResize = false;
             _timeout = 1000;
             _countForPass = 5;
+
+            _size = 25;
+        }
+
+        public void LoadConfigFile(string path)
+        {
+            try
+            {
+                System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open);
+                byte[] buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, (int)fs.Length);
+                System.IO.MemoryStream stream = new System.IO.MemoryStream(buffer);
+                Camera camera = new Camera();
+                XmlSerializer formatter = new XmlSerializer(camera.GetType());
+                camera = (Camera)formatter.Deserialize(stream);
+
+                // read values
+                _camID = camera.camID;
+                _camURL = camera.camURL;
+
+                _cropX = camera.cropX;
+                _cropY = camera.cropY;
+                _cropWidth = camera.cropWidth;
+                _cropHeight = camera.cropHeight;
+                _savePath = camera.savePath;
+
+                _isResize = camera.isResize;
+                _timeout = camera.timeout;
+                _countForPass = camera.countForPass;
+
+                _size = camera.size;
+
+                stream.Close();
+                fs.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Config File read error");
+            }
         }
 
     }

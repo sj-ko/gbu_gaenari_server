@@ -85,9 +85,9 @@ namespace GBU_Server_DotNet
             ANPRThread = new Thread(ANPRThreadFunction);
         }
 
-        public ANPR(int timeout, int countForPass)
+        public ANPR(int timeout, int countForPass, int size)
         {
-            initANPR(_anpr, timeout);
+            initANPR(_anpr, timeout, size);
 
             CANDIDATE_COUNT_FOR_PASS = countForPass;
 
@@ -102,7 +102,7 @@ namespace GBU_Server_DotNet
         private void initANPR(cmAnpr anpr)
         {
             anpr.SetProperty("anprname", "cmanpr-7.2.7.68:kor");
-            anpr.SetProperty("size", "15"); // default 25  (20-->15)
+            anpr.SetProperty("size", "25"); // default 25  (20-->15)
             anpr.SetProperty("size_min", "6"); //"8"); // Default 6
             anpr.SetProperty("size_max", "93"); //"40"); // Default 93
 
@@ -137,10 +137,10 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("posfreq", "1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000;1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000");*/
         }
 
-        private void initANPR(cmAnpr anpr, int timeout)
+        private void initANPR(cmAnpr anpr, int timeout, int size)
         {
             anpr.SetProperty("anprname", "cmanpr-7.2.7.68:kor");
-            anpr.SetProperty("size", "15"); // default 25  (20-->15)
+            anpr.SetProperty("size", size); // default 25  (20-->15)
             anpr.SetProperty("size_min", "6"); //"8"); // Default 6
             anpr.SetProperty("size_max", "93"); //"40"); // Default 93
 
@@ -229,7 +229,8 @@ namespace GBU_Server_DotNet
                             for (int j = 0; j < plate_candidates.Count; j++)
                             {
                                 //if (_tcsnccmp(anpr_result[i].c_str(), plate_candidates[j].plate_string, _tcslen(anpr_result[i].c_str())) == 0)  {
-                                if (anpr_result[i].Equals(plate_candidates[j].plate_string))
+                                if (anpr_result[i].Equals(plate_candidates[j].plate_string) ||
+                                     (anpr_result[i].Substring(anpr_result[i].Length - 4, 4).Equals(plate_candidates[j].plate_string.Substring(plate_candidates[j].plate_string.Length - 4, 4))))
                                 {
                                     isNew = false;
 #if (!FAST_DETECT)
@@ -355,12 +356,12 @@ namespace GBU_Server_DotNet
             }
         }
 
-        public void pushMedia(Bitmap anprImage, int width, int height)
+        public int pushMedia(Bitmap anprImage, int width, int height)
         {
             if (_imageBufferCount >= Constants.MAX_IMAGE_BUFFER)
             {
                 Console.WriteLine("Media Buffer Overflow!");
-                return;
+                return 0;
             }
             
             byte[] anprByteArray = imageToByteArray(anprImage);
@@ -378,6 +379,7 @@ namespace GBU_Server_DotNet
             }
             _imageBufferCount++;
 
+            return 1;
         }
 
         public bool popMedia(ref GBUVideoFrame frame)
@@ -526,19 +528,24 @@ namespace GBU_Server_DotNet
                         str = str.Replace("로", "호");
                     }
 
-                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("자"))
+                    else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("자"))
                     {
                         str = str.Replace("자", "호");
                     }
 
-                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("소"))
+                    else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("소"))
                     {
                         str = str.Replace("소", "호");
                     }
 
-                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("보"))
+                    /*else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("보"))
                     {
                         str = str.Replace("보", "호");
+                    }*/
+
+                    else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("다"))
+                    {
+                        str = str.Replace("다", "호");
                     }
 
                     // 하
@@ -558,7 +565,7 @@ namespace GBU_Server_DotNet
                         str = str.Replace("허", "하");
                     }
 
-                    /*else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("마"))
+                    /*else if (_anpr.GetCharacter(2).confidence < 80 && str.Substring(2, 1).Equals("마"))
                     {
                         str = str.Replace("마", "하");
                     }*/

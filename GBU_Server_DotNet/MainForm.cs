@@ -56,9 +56,32 @@ namespace GBU_Server_DotNet
         public Color notifyColor = Color.LightGray;
         public int notifyCount = 0;
 
+        public int overflowCount = 0;
+
+        public string configPath = "";
+        public bool isAutoStart = false;
+
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        public MainForm(string[] args)
+        {
+            InitializeComponent();
+
+            foreach (string arg in args)
+            {
+                if (arg.Equals("--autostart"))
+                {
+                    isAutoStart = true;
+                }
+                else
+                {
+                    // config path
+                    configPath = arg;
+                }
+            }
         }
 
         ~MainForm()
@@ -82,12 +105,22 @@ namespace GBU_Server_DotNet
             formGraphics = this.CreateGraphics();
 
             dbManager.SavePath = camera.savePath;
+
+            if (isAutoStart)
+            {
+                Play();
+            }
         }
 
         private void InitCamera()
         {
             camera = new Camera();
             camera.PropertyChanged += camera_PropertyChanged;
+
+            if (configPath.Length > 0)
+            {
+                camera.LoadConfigFile(configPath);
+            }
         }
 
         private void UpdateFormUIValue()
@@ -155,7 +188,7 @@ namespace GBU_Server_DotNet
 
         private void Play()
         {
-            anpr = new ANPR(camera.timeout, camera.countForPass);
+            anpr = new ANPR(camera.timeout, camera.countForPass, camera.size);
             anpr.camID = camera.camID;
 
             string path = camera.camURL;
@@ -215,6 +248,8 @@ namespace GBU_Server_DotNet
             lastPlayTime = 0;
             mediaMonitorCount = 0;
 
+            overflowCount = 0;
+
             //_plateListIdx = 0;
             //_plateList.Clear();
         }
@@ -250,16 +285,36 @@ namespace GBU_Server_DotNet
                     {
                         if (anpr != null)
                         {
+                            bool isReconnect = false;
                             Bitmap bmp = new Bitmap(this.panel1.Width, this.panel1.Height);
 
                             bmp = (Bitmap)ImageCapture.DrawToImage(this.panel1, camera.cropX, camera.cropY, camera.cropWidth, camera.cropHeight); // 108, 110, 800, 450);
                             if (camera.isResize)
                             {
-                                Console.WriteLine("resize!");
-                                bmp = ResizeBitmap(bmp, 480, 270); // size of anpr input image
+                                if (camera.cropHeight > camera.cropWidth)
+                                {
+                                    Console.WriteLine("resize for corridor mode!");
+                                    bmp = ResizeBitmap(bmp, 270, 480); // size of anpr input image
+                                }
+                                else
+                                {
+                                    Console.WriteLine("resize!");
+                                    bmp = ResizeBitmap(bmp, 480, 270); // size of anpr input image
+                                }
                             }
-                            anpr.pushMedia(bmp, bmp.Width, bmp.Height);
+                            int pushMediaResult = anpr.pushMedia(bmp, bmp.Width, bmp.Height);
                             bmp.Dispose();
+
+                            if (pushMediaResult < 1)
+                            {
+                                Console.WriteLine("Overflow count " + (overflowCount++));
+                            }
+                            
+                            if (overflowCount > 5)
+                            {
+                                Console.WriteLine("Overflow count exceeded. Try to reconnect!");
+                                isReconnect = true;
+                            }
 
                             if (notifyColor == Color.Red || notifyColor == Color.LightGreen)
                             {
@@ -295,13 +350,18 @@ namespace GBU_Server_DotNet
                                 if (mediaMonitorCount > 10)
                                 {
                                     // reconnect
-                                    Stop();
-                                    Play();
+                                    isReconnect = true;
                                 }
                                 else
                                 {
                                     lastPlayTime = playtime;
                                 }
+                            }
+
+                            if (isReconnect)
+                            {
+                                Stop();
+                                Play();
                             }
 
                         }

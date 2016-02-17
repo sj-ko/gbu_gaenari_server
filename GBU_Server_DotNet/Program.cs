@@ -14,7 +14,17 @@ namespace GBU_Server_DotNet
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length > 1)
+            {
+                Application.Run(new MainForm(args));
+            }
+            else
+            {
+                Application.Run(new MainForm());
+            }
         }
     }
 }

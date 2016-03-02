@@ -41,6 +41,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.listView1 = new System.Windows.Forms.ListView();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -146,16 +147,27 @@
             // 
             this.listView1.Location = new System.Drawing.Point(3, 753);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1280, 115);
+            this.listView1.Size = new System.Drawing.Size(522, 115);
             this.listView1.TabIndex = 6;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(531, 753);
+            this.textBox1.MaxLength = 1000;
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(752, 114);
+            this.textBox1.TabIndex = 7;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1286, 873);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.menuStrip1);
@@ -189,6 +201,7 @@
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
         public System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

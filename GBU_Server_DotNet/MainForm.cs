@@ -76,6 +76,20 @@ namespace GBU_Server_DotNet
                 {
                     isAutoStart = true;
                 }
+                else if (arg.Equals("--enlarge"))
+                {
+                    this.panel1.Width = 1600;
+                    this.panel1.Height = 900;
+
+                    this.Width = 1622;
+                    this.Height = 1050;
+
+                    this.listView1.Location = new Point(this.listView1.Location.X, this.listView1.Location.Y + 180);
+                    this.textBox1.Location = new Point(this.textBox1.Location.X, this.textBox1.Location.Y + 180);
+
+                    this.listView1.Height -= 50;
+                    this.textBox1.Height -= 50;
+                }
                 else
                 {
                     // config path
@@ -110,6 +124,8 @@ namespace GBU_Server_DotNet
             {
                 Play();
             }
+
+            Console.SetOut(new ControlWriter(this.textBox1));
         }
 
         private void InitCamera()
@@ -294,12 +310,12 @@ namespace GBU_Server_DotNet
                                 if (camera.cropHeight > camera.cropWidth)
                                 {
                                     Console.WriteLine("resize for corridor mode!");
-                                    bmp = ResizeBitmap(bmp, 270, 480); // size of anpr input image
+                                    bmp = ResizeBitmap(bmp, 360, 640); // size of anpr input image
                                 }
                                 else
                                 {
                                     Console.WriteLine("resize!");
-                                    bmp = ResizeBitmap(bmp, 480, 270); // size of anpr input image
+                                    bmp = ResizeBitmap(bmp, 640, 360); // size of anpr input image
                                 }
                             }
                             int pushMediaResult = anpr.pushMedia(bmp, bmp.Width, bmp.Height);
@@ -447,5 +463,15 @@ namespace GBU_Server_DotNet
             Stop();
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox1.TextLength >= textBox1.MaxLength)
+            {
+                textBox1.ResetText();
+            }
+
+            textBox1.SelectionStart = textBox1.Text.Length; //Set the current caret position at the end
+            textBox1.ScrollToCaret(); //Now scroll it automatically
+        }
     }
 }

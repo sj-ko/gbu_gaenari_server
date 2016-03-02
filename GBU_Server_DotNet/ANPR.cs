@@ -104,9 +104,9 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("anprname", "cmanpr-7.2.7.68:kor");
             anpr.SetProperty("size", "25"); // default 25  (20-->15)
             anpr.SetProperty("size_min", "6"); //"8"); // Default 6
-            anpr.SetProperty("size_max", "93"); //"40"); // Default 93
+            anpr.SetProperty("size_max", "35"); //"40"); // Default 93
 
-            anpr.SetProperty("nchar_min", "6"); // "7"); // Default 8
+            anpr.SetProperty("nchar_min", "7"); // "7"); // Default 8
             anpr.SetProperty("nchar_max", "9"); // Default 9
 
             anpr.SetProperty("slope", "9"); // "-5"); // Default -22
@@ -119,7 +119,7 @@ namespace GBU_Server_DotNet
 
             anpr.SetProperty("timeout", "500"); // default 100 
 
-            anpr.SetProperty("contrast_min", "10");
+            anpr.SetProperty("contrast_min", "30");
             anpr.SetProperty("xtoyres", "0");
             anpr.SetProperty("colortype", "0");
             anpr.SetProperty("gaptospace", "0");
@@ -142,9 +142,9 @@ namespace GBU_Server_DotNet
             anpr.SetProperty("anprname", "cmanpr-7.2.7.68:kor");
             anpr.SetProperty("size", size); // default 25  (20-->15)
             anpr.SetProperty("size_min", "6"); //"8"); // Default 6
-            anpr.SetProperty("size_max", "93"); //"40"); // Default 93
+            anpr.SetProperty("size_max", "35"); //"40"); // Default 93
 
-            anpr.SetProperty("nchar_min", "6"); // "7"); // Default 8
+            anpr.SetProperty("nchar_min", "7"); // "7"); // Default 8
             anpr.SetProperty("nchar_max", "9"); // Default 9
 
             anpr.SetProperty("slope", "9"); // "-5"); // Default -22
@@ -157,7 +157,7 @@ namespace GBU_Server_DotNet
 
             anpr.SetProperty("timeout", timeout); // default 100 
 
-            anpr.SetProperty("contrast_min", "10");
+            anpr.SetProperty("contrast_min", "30");
             anpr.SetProperty("xtoyres", "0");
             anpr.SetProperty("colortype", "0");
             anpr.SetProperty("gaptospace", "0");
@@ -528,24 +528,35 @@ namespace GBU_Server_DotNet
                         str = str.Replace("로", "호");
                     }
 
+                    // '자' are reserved for business vehicles. (Loca-12-Kr-1234)
                     else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("자"))
                     {
                         str = str.Replace("자", "호");
                     }
 
-                    else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("소"))
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("소"))
                     {
                         str = str.Replace("소", "호");
                     }
 
-                    /*else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("보"))
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("보"))
                     {
                         str = str.Replace("보", "호");
-                    }*/
+                    }
 
                     else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("다"))
                     {
                         str = str.Replace("다", "호");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 90 && str.Substring(2, 1).Equals("조"))
+                    {
+                        str = str.Replace("조", "호");
+                    }
+
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("모"))
+                    {
+                        str = str.Replace("모", "호");
                     }
 
                     // 하
@@ -555,7 +566,7 @@ namespace GBU_Server_DotNet
                         str = str.Replace("아", "하");
                     }
 
-                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("라"))
+                    else if (_anpr.GetCharacter(2).confidence < 91 && str.Substring(2, 1).Equals("라"))
                     {
                         str = str.Replace("라", "하");
                     }
@@ -575,6 +586,13 @@ namespace GBU_Server_DotNet
                     {
                         str = str.Replace("고", "로");
                     }*/
+
+
+                    // 무 -> 부
+                    else if (_anpr.GetCharacter(2).confidence < 95 && str.Substring(2, 1).Equals("무"))
+                    {
+                        str = str.Replace("무", "부");
+                    }
                 }
 
             }

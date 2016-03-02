@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{63F8FFFA-B799-4639-A85C-C8882CE58337}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GBU_Server_DotNet</RootNamespace>
     <AssemblyName>GBU_Server_DotNet</AssemblyName>
@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="ANPR.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="ControlWriter.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="FileServer.cs" />
     <Compile Include="MainForm.cs">
@@ -167,7 +168,9 @@
       <DependentUpon>SearchWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="Properties\app.manifest" />
+    <None Include="Properties\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

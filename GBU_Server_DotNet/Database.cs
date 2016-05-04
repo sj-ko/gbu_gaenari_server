@@ -40,7 +40,7 @@ namespace GBU_Server_DotNet
         private string strConn = "User=sysdba;" +
                                 "Password=masterkey;" +
                                 "Database=D:/G/DATA/OPOSDB;" +
-                                "Server=14.52.220.82;" +
+                                "Server=localhost;" +
                                 "Port=3050;";
         private FbConnection conn;
 #else

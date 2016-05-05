@@ -1,4 +1,10 @@
-﻿//#define TEST_PAINTEVENT
+﻿/* Copyright (C)GBU Datalinks, Co. Ltd. - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by SJ Ko <sj.ko@gbudatalinks.com>, November 2015
+ */
+
+//#define TEST_PAINTEVENT
 
 using System;
 using System.Collections.Generic;

@@ -214,7 +214,7 @@ namespace GBU_Server_DotNet
             anpr.camID = camera.camID;
 
             string path = camera.camURL;
-            //string path = @"C:\NetDEVSDK\Record\netDev_04.ts";
+            //string path = @".\netDev_04.ts";
             player = new MediaPlayer(".\\plugins");
 
             player.SetRenderWindow((int)this.panel1.Handle);

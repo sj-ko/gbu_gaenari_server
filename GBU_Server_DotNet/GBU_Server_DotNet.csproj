@@ -96,7 +96,7 @@
     </Reference>
     <Reference Include="gxdotnet8, Version=7.2.10.1, Culture=neutral, PublicKeyToken=3d92ae624958d2aa, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SystemRoot)\Windows\SysWOW64\gx\dotnet\gxdotnet8.dll</HintPath>
+      <HintPath>$(SystemRoot)\SysWOW64\gx\dotnet\gxdotnet8.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MjpegProcessor">

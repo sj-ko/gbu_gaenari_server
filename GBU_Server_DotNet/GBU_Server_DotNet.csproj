@@ -85,19 +85,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="cmanprdotnet8, Version=7.2.7.3, Culture=neutral, PublicKeyToken=edd405d775b0b262, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SystemRoot)\System32\gx\dotnet\cmanprdotnet8.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="cmanprdotnet8">
+      <HintPath>lib\x64\cmanprdotnet8.dll</HintPath>
     </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=4.9.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.4.10.0.0\lib\net45\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
-    <Reference Include="gxdotnet8, Version=7.2.11.0, Culture=neutral, PublicKeyToken=e4890e0fa5b8cf0d, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(SystemRoot)\System32\gx\dotnet\gxdotnet8.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="gxdotnet8">
+      <HintPath>lib\x64\gxdotnet8.dll</HintPath>
     </Reference>
     <Reference Include="MjpegProcessor">
       <HintPath>lib\MjpegProcessor.dll</HintPath>

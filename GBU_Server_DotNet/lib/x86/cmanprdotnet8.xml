@@ -1,0 +1,2364 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>cmanprdotnet8</name>
+    </assembly>
+    <members>
+        <member name="T:cm.NamespaceDoc">
+            <p><b>CMANPR</b></p>
+            <p><b>7.2.7</b></p>
+        <summary>
+<p><b><i>The Carmen Automatic Number Plate Reader SDK</i></b></p>
+<p>The CARMEN ANPR is an intelligent image processing engine based on the number plate reading software of the ARH Inc. As a result of continuous development since 1997, the seventh generation of the software provides numerous options. Besides recognizing characters of a number plate, the engine is also capable of identifying additional attributes such as:</p><p>
+<list type="bullet">
+<item><p>number plate type (within a country/state)</p></item>
+<item><p>plate color (background color)</p></item>
+<item><p>coordinates of the plate and its characters</p></item>
+<item><p>confidence level value.</p></item>
+</list>
+</p><p>The engine can be configured by its parameters located in the gxsd.dat file. By setting these properties appropriately (according to the environment of the camera) the speed of the recognition process can be increased.</p><p><b><i>Properties of the CMANPR module</i></b></p>
+<p><b><i>anprname - Name of the actual engine</i></b></p>
+<p>The name of the actual (current) engine. It can be altered during runtime. Its value can be set according to the following: <b>engine module name : property group</b> If there is no specified property group then the cmanpr module handles it as 'default'. <b>NOTE</b>: In case of SaveProperties, the module is not capable of saving the property value to the gxsd.dat file.</p><p>Default value: not available</p><p><b><i>ppengine - Name of the post process engine</i></b></p>
+<p>The name of the post process engine after calling FindFirst or FindNext. If the current engine is a post process capable engine and it has post process engines, the FindFirst and the FindNext function calls the post process engine selected by the main engine after calling the FindFirst or FindNext function of the main engine. <b>NOTE</b>: Read only property!</p><p>Default value: not available</p><p><b><i>Properties of the engines</i></b></p>
+<p>The property name of the module is <i>cmanpr</i> in the property tree. <code>
+   &lt;default&gt;
+      &lt;cmanpr&gt;
+         &lt;datafile value=&quot;cmanpr-7.0.6.31.dat&quot;/&gt;
+         &lt;size value=&quot;20&quot;/&gt;
+		 ...
+   </code></p><p><b><i>datafile - Name of data file of the engine</i></b></p>
+<p>This file has to be in the module folder. The name of the default data file is {engine name}.dat (i.e. cmanpr-7.82-latin.dat for the cmanpr-7.82-latin engine). In case of having a data file with parameters optimized for some special number plate types (for example cmanpr-7.82-latin.dat for European plates) this file can be used as well.</p><p>Default value: {module name}.dat</p><p><b><i>contrast_min - Minimal contrast</i></b></p>
+<p>The supposed minimal difference between the grayscale value of the number plate characters and the plate background.</p><p>Engine dependent default value.</p><p><b><i>size - Average height of the characters</i></b></p>
+<p>The average height of the number plate characters in the image in pixels.</p><p><b>NOTE</b>: size_min &lt;= size &lt;= size_max So, the size value has to be equal to or greater than size_min and equal to or less than size_max otherwise the engine may return no data.</p><p>Engine dependent default value.</p><p><b><i>size_min - Minimum height of the characters</i></b></p>
+<p>The minimum height of the number plate characters in the image in pixels.</p><p>Engine dependent default value.</p><p><b><i>size_max - Maximum height of characters</i></b></p>
+<p>The maximum height of the number plate characters in the image in pixels.</p><p>Engine dependent default value.</p><p><b><i>nchar_min - Minimum number of the characters in the plate</i></b></p>
+<p>The minimum number of the number plate characters in the plate. The engine doesn't return number plates on which the number of characters is less than the nchar_min value.</p><p><b>NOTE</b>: This property is ignored if the plate type recognition is enabled!</p><p>Engine dependent default value.</p><p><b><i>nchar_max - Maximum number of characters int the plate</i></b></p>
+<p>The maximum number of the number plate characters in the plate. The engine doesn't return number plates on which the number of characters is more than the nchar_max value.</p><p><b>NOTE</b>: This property is ignored if the plate type recognition is enabled!</p><p>Engine dependent default value.</p><p><b><i>slope - Average slope of the number plate</i></b></p>
+<p>The average slope of the number plate in the image. This value is represented in percent (%) and it is positive if the horizontal axis of the number plate slopes downwards viewing from left to right.</p><p><b>NOTE</b>: slope_min &lt;= slope &lt;= slope_max So, the slope value has to be equal to or greater than slope_min and equal to or less than slope_max otherwise the engine may return no data.</p><p>Engine dependent default value.</p><p><b><i>slope_min - Minimum slope of the number plate</i></b></p>
+<p>The minimum slope of the number plate in the image. This value is represented in percent (%) and it is positive if the horizontal axis of the number plate slopes downwards viewing from left to right.</p><p>Engine dependent default value.</p><p><b><i>slope_max - Maximum slope of the number plate</i></b></p>
+<p>The maximum slope of the number plate in the image. This value is represented in percent (%) and it is positive if the horizontal axis of the number plate slopes downwards viewing from left to right.</p><p>Engine dependent default value.</p><p><b><i>slant - Average slant of the number plate</i></b></p>
+<p>The average slant of the number plate characters in the image. This value is represented in percent (%) and it is positive if the vertical axis of the characters slants to the left viewing from bottom to top.</p><p><b>NOTE</b>: slant_min &lt;= slant &lt;= slant_max So, the slant value has to be equal to or greater than slant_min and equal to or less than slant_max otherwise the engine may return no data.</p><p>Engine dependent default value.</p><p><b><i>slant_min - Minimum slant of the number plate</i></b></p>
+<p>The minimum slant of the number plate characters in the image. This value is represented in percent (%) and it is positive if the vertical axis of the characters slants to the left viewing from bottom to top.</p><p>Engine dependent default value.</p><p><b><i>slant_max - Maximum slant of the number plate</i></b></p>
+<p>The maximum slant of the number plate characters in the image. This value is represented in percent (%) and it is positive if the vertical axis of the characters slants to the left viewing from bottom to top.</p><p>Engine dependent default value.</p><p><b><i>unicode_in_text - Representation of the non ASCII characters in the text parameter of the cmNP structure</i></b></p>
+<p>Possible values are:</p><p>
+<list type="bullet">
+<item><p>0 : The non ASCII characters are substituted by an exclamation mark ('!')</p></item>
+<item><p>1 : Each non ASCII character is represented with 6 ASCII characters: '(xxxx)', where xxxx is the Unicode code of the character in hexadecimal form including the leading zeroes</p></item>
+</list>
+</p><p>Default value: 1</p><p><b><i>timeout - Time limit</i></b></p>
+<p>The length of the time interval in milliseconds in which the module tries to find new number plates. The interval starts when cm_findfirst() is called. At the end of this period the engine tries to finish searching new plates and any additional call of cm_findnext() will result no plates found. Zero timeout value means no time limit.</p><p>Default value: 1000 By setting the timeout value before the cm_findnext () call, the timing will be restarted and the evaluation lasts till the newly specified time interval.</p><p>Example: If the value of the timeout is set to 500 The cm_findfirst() returns successfully after 200 ms. In this case after additional cm_findnext() call 300 ms would be available. However, if the timeout is set to 500 after cm_findfirst(), then 500ms would be available for further cm_findnext() calls.</p><p><b><i>xtoyres - The ratio of horizontal and vertical resolutions</i></b></p>
+<p>The ratio of the horizontal and vertical resolutions of the plate. This value is represented in percent (%). The horizontal resolution is the ratio of the width of the plate in the image and the real width of the plate. The vertical resolution is the ratio of the height of the plate in the image and the real height of the plate. Zero value to xtoyres means automatic setting of the ratio by cm_findfirst() using xsize and ysize parameters of the image as follows: if xsize/ysize is less or equal to 7/3, xtoyres is set to 100, if xsize/ysize is greater than 7/3, xtoyres is set to 200.</p><p>The ratio of the horizontal and vertical resolutions of the plate. This value is represented in percent (%). The horizontal resolution is the ratio of the width of the plate in the image and the real width of the plate, the vertical resolution is the ratio of the height of the plate in the image and the real height of the plate.</p><p>Engine dependent default value.</p><p>This parameter can be set manually using images that contain plates of the same type. Calculating the average of the ratio r of the width and the height of the plates on images and by calculating the R ratio of the width and the height of a real plate: (1) xtoyres=[(100*r)/R+0,5].</p><p><b><i>colortype - Background color of the plate</i></b></p>
+<p>The type of the plates to be read by the module.</p><p>Possible values are:
+<list type="bullet">
+<item><p>0 : Module searches for all kinds of plates in the image.</p></item>
+<item><p>1 : Module searches for plates only with black characters on white background.</p></item>
+<item><p>2 : Module searches for plates only with white characters on black background.</p></item>
+</list>
+</p><p>Default value: 0</p><p><b><i>gaptospace - Gaps between characters</i></b></p>
+<p>If this parameter is set to a nonzero value, the module searches for gaps between characters that can be spaces. Space characters are inserted into these positions in the text and wtext fields of the result structure. If the value is zero, no spaces will appear in the result.</p><p>Default value: 0</p><p><b><i>general - Selecting general or special returning mode</i></b></p>
+<p><b>NOTE</b>: Values 4, 5 and 6 can be applied only if the .dat file contains ADR information (e.g. cmanpr-7.74-latin-ADR.dat. For more information feel free to contact support@arhungary.hu). Other engines use only two values: 0 and 1.</p><p>By this property, the reading modes can be selected.</p><p>Different functions can be activated by switching certain bits:
+<list type="bullet">
+<item><p>1. bit: searching for any kind of license plate (does not search for ADR plates)</p></item>
+<item><p>2. bit: turning off returning the value of the license plate with plate type (the main purpose of it to make the returning of the license plate possible to turn off in case of reading the ADR plate)</p></item>
+<item><p>3. bit: searching for ADR plates with text</p></item>
+<item><p>4. bit: searching for empty ADR plates detection of empty ADR plates in the image (EADR)</p></item>
+</list>
+</p><p>The engine contains the algorithm from the version 7.2.7.111, however, a data file  that contains the information necessary for the EADR  is required for its usage. The EADR can be called by the cm_findemptyadr() property only right after the cm_findfirst() property, otherwise it returns with 'No image' error message. If the engine finds a plate like that, it will upload the data of the frame and the confidence to the <see cref="T:cm.cmNP"/> structure, the type will be 9799. The EADR function can be turned on by the 4th bit of the parameter.</p><p>For example: the algorithm can return license, ADR and EADR plate in case of the general=13 value (if the .dat is correct).</p><p>Possible values:
+<list type="bullet">
+<item><p>0 : special mode, license plate text results returned only if the plate type is also recognized <b>[0000]</b></p></item>
+<item><p>1 : general mode, text results are always returned (<b>NOTE</b>: ADR results are not returned) <b>[0001]</b></p></item>
+<item><p>4 : returns ADR and license plate texts only with recognized plate types <b>[0100]</b></p></item>
+<item><p>5 : every result is returned <b>[0101]</b></p></item>
+<item><p>6 : only ADR types with plate type recognition are returned <b>[0110]</b></p></item>
+<item><p>8 : only EADR and license plate with plate type recognition <b>[1000]</b></p></item>
+<item><p>9 : 9: only EADR and license plate <b>[1001]</b></p></item>
+<item><p>10 : only EADR <b>[1010]</b></p></item>
+<item><p>12 : license plate with plate type, ADR and EADR <b>[1100]</b></p></item>
+<item><p>13 : every result is returned <b>[1101]</b></p></item>
+<item><p>14 : only ADR and EADR <b>[1110]</b></p></item>
+</list>
+</p><p>Default value: 1</p><p><b><i>depth - Heuristic sensitivity</i></b></p>
+<p>CMANPR engines with license plate type recognition use more sophisticated algorithms than former ones, thus not only the plate types are recognized but text accuracy is also improved in most cases. If the recognition time is too long for the application, the depth of search may be lowered through this parameter, however the accuracy of both text and plate type reading will be affected. If the application is not time-crucial, then this depth may be increased to get higher recognition accuracy. If set to 0, plate type recognition and heuristics are disabled.</p><p><b>NOTE</b>: For reading plate colors, plate type recognition has to be enabled!</p><p>Engine dependent default value. Possible values: 0-500.</p><p><b><i>adapt_environment - Accelerated mode selector</i></b></p>
+<p>This property serves as an accelerator for the recognition process; it can be applied only when license plate type recognition is enabled.</p><p>Possible values: 0 or 1</p><p>Standard mode if set to 0.</p><p>If set to 1, CMANPR engine applies real-time adaptation methods based on statistical measurements. In many cases reading a few recognized license plates is enough to adapt to the environment and get even two times faster license plate recognition, however recognition time and accuracy is optimized only when the application is running.</p><p><b>IMPORTANT NOTES</b> when using adapt_environment:
+<list type="bullet">
+<item><p><b>Timeout</b> Acceleration is VERY high using engines with large plate type set, if only a few different plate types are common at the recognition location (e.g. Arabic engine used in Bahrain). Although the common types will have intensively accelerated recognition, the uncommon ones will have about the same recognition time as without using this option. Because of this, using low timeout value (e.g. based on the mean recognition time calculated using acceleration) may end up in loosing all the uncommon license plates. The timeout value must be set properly, not too low, taking in consideration all aspects.</p></item>
+</list>
+</p><p>
+<list type="bullet">
+<item><p><b>Recognition</b><b>accuracy</b> Acceleration is a very useful option in many cases (especially in time-crucial applications), but it can easily cause some hard-to-understand "errors", e.g. the same license plate on the same picture may be read at first but misread or not read at all after some other plates. This is because of statistical reasons and it is not very common, however it may happen especially when using low timeout values (read note no. 1). According to our tests text reading accuracy is nearly the same with or without acceleration. Plate type recognition accuracy is more sensitive to this option, but this also means that they might even be improved in some cases.</p></item>
+</list>
+</p><p>
+<list type="bullet">
+<item><p><b>Error</b><b>reporting</b> Using acceleration makes it difficult to reproduce errors or misreadings, because the engine continuously changes recognition parameters. Thus before reporting an error please check it also with acceleration disabled to help us decide whether it is an acceleration-related issue.</p></item>
+</list>
+</p><p>Default value: 0</p><p><b><i>analyzecolors - Color recognition mode</i></b></p>
+<p>This property selects the mode of color recognition.</p><p>Possible values:
+<list type="bullet">
+<item><p>0 : Color identification is disabled</p></item>
+<item><p>1 : CMANPR engine returns discrete color values (exact values are read and the statistically most possible results are given)<b>NOTE</b>: Discrete results may be incorrect - because of statistical reasons - in case of plates with formerly unseen colors (e.g. blue plates will not be identified if there were only red and orange ones available when the CMANPR data file was created)</p></item>
+<item><p>2 : CMANPR engine returns the exact RGB values read (further processing required)</p></item>
+</list>
+</p><p>The CMANPR engine is able to recognize the color of the license plate only when the following requirements are fulfilled:
+<list type="bullet">
+<item><p>the license plate type recognition has to be enabled (depth > 0)</p></item>
+<item><p>the license plate type must be identified by the engine (if not, the identified color value might be wrong)</p></item>
+<item><p>the analyzecolors property has to be set to 1 or 2</p></item>
+</list>
+</p><p>Default value: 0</p><p><b><i>whitebalance - White balance correction</i></b></p>
+<p>When applying color recognition, the white balance is set automatically by the engine. In some special cases (e.g. special camera settings, extreme whether or light conditions) the returned colors may not be correct. To avoid misrecognition of colors the whitebalance property can be used.
+<list type="bullet">
+<item><p>If it is set to 0 then white balance correction is not used.</p></item>
+<item><p>If it is set to 100 then maximal white balance correction is applied</p></item>
+</list>
+</p><p>24/7 use of white balance correction can also be applied. Incorrect results may return only when the camera is used in very different environmental conditions in a very short time (e.g. the camera is used at night with whitebalance 100, turned off and then turned on in the morning with the same settings).</p><p>Default value: 100</p><p><b><i>Available path names to get result items from gxVARIANT result (CM_CALL_FINDFIRSTV, CM_CALL_FINDNEXTV)</i></b></p>
+<p>
+<list type="bullet">
+<item><p><b>text/unicode</b> : <see cref="F:cm.cmNP.wtext"/></p></item>
+<item><p><b>text/ascii</b> : <see cref="F:cm.cmNP.text"/></p></item>
+<item><p><b>text/display</b> : displayable text (for arabic plates)</p></item>
+<item><p><b>type/code</b> : <see cref="F:cm.cmNP.type"/></p></item>
+<item><p><b>type/country_short</b> : short country name for the plate</p></item>
+<item><p><b>type/country_long</b> : long country name for the plate</p></item>
+<item><p><b>type/state_short</b> : short state name for the plate</p></item>
+<item><p><b>type/state_long</b> : long state name for the plate</p></item>
+<item><p><b>confidence</b> : <see cref="F:cm.cmNP.confidence"/></p></item>
+<item><p><b>frame</b> : <see cref="F:cm.cmNP.frame"/></p></item>
+<item><p><b>process_time</b> : anpr time in msec</p></item>
+<item><p><b>engine_name</b> : name of the engine that recognized the plate</p></item>
+<item><p><b>bkcolor/code</b> : <see cref="F:cm.cmNP.bkcolor"/> (The color is in BGR format)</p></item>
+<item><p><b>bkcolor/name</b> : name for the bkcolor member</p></item>
+<item><p><b>color/code</b> : <see cref="F:cm.cmNP.color"/> (The color is in BGR format)</p></item>
+<item><p><b>color/name</b> : name for the color member</p></item>
+<item><p><b>color3rd/code</b> : 3rd color for three color plates (The color is in BGR format)</p></item>
+<item><p><b>color3rd/name</b> : name for the 3rd color</p></item>
+<item><p><b>chars/count</b> : <see cref="F:cm.cmNP.ncharacter"/></p></item>
+<item><p><b>tips/count</b> : <see cref="F:cm.cmNP.ntip"/></p></item>
+<item><p><b>chars/N/code</b> : character code of the plate character No. N</p></item>
+<item><p><b>chars/N/confidence</b> : character confidence of the plate character No. N</p></item>
+<item><p><b>chars/N/frame</b> : character frame of the plate character No. N</p></item>
+<item><p><b>chars/N/bkcolor/code</b> : character background color of the plate character No. N (The color is in BGR format)</p></item>
+<item><p><b>chars/N/bkcolor/name</b> : name for the bkcolor of the plate character No. N</p></item>
+<item><p><b>chars/N/color/code</b> : character color of the plate character No. N (The color is in BGR format)</p></item>
+<item><p><b>chars/N/color/name</b> : name for the color of the plate character No. N</p></item>
+<item><p><b>tips/N/code</b> : character code of the tip No. N</p></item>
+<item><p><b>tips/N/confidence</b> : character confidence of the tip No. N</p></item>
+<item><p><b>tips/N/frame</b> : character frame of the tip No. N</p></item>
+<item><p><b>tips/N/bkcolor/code</b> : character background color of the tip No. N (The color is in BGR format)</p></item>
+<item><p><b>tips/N/bkcolor/name</b> : name for the bkcolor of the tip No. N</p></item>
+<item><p><b>tips/N/color/code</b> : character color of the plate character No. N (The color is in BGR format)</p></item>
+<item><p><b>tips/N/color/name</b> : name for the color of the plate character No. N </p></item>
+</list>
+</p>        </summary>
+        </member>
+        <member name="T:cm.cmAnpr">
+            <summary>Class for CMANPR functions. </summary>
+        </member>
+        <member name="F:cm.cmAnpr.panprresult">
+            <summary>Inner pointer to the <see cref="T:cm.cmNP"/> structure that holds the last result. </summary>
+        </member>
+        <member name="F:cm.cmAnpr.patxt2wtxt">
+            <summary>Unicode conversion of the panprresult->text. </summary>
+        </member>
+        <member name="F:cm.cmAnpr.postprocengine">
+            <summary>The name of the post process engine returned by the FindFirstPP function. </summary>
+        </member>
+        <member name="M:cm.cmAnpr.#ctor">
+            <summary>Class initialization with default properties. </summary>
+        </member>
+        <member name="M:cm.cmAnpr.#ctor(System.String)">
+            <summary>Class initialization with place of properties (Unicode version). </summary>
+            <param name="propname">Place of properties in property tree (name of property group). </param>
+        </member>
+        <member name="M:cm.cmAnpr.#ctor(System.String,System.String)">
+            <summary>Class initialization with place of properties and name of the module (Unicode version). </summary>
+            <param name="propname">Place of properties in property tree (name of property group). </param>
+            <param name="modname">Name of the module. </param>
+        </member>
+        <member name="M:cm.cmAnpr.Dispose">
+            <summary>Class termination. </summary>
+        </member>
+        <member name="M:cm.cmAnpr.#ctor">
+        </member>
+        <member name="M:cm.cmAnpr.FindFirst(gx.gxImageData)">
+            <summary>Reads the first number plate from the image. </summary>
+            <remarks>By calling the FindFirst function the application can read a number plate from an image. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format. If the current engine is a post process capable engine and it has post process engines, the FindFirst function calls the post process engine selected by the main engine after calling the FindFirst function of the main engine. After calling the post process engine the ppengine property of the CMANPR modul will store the name of the post process engine.</remarks>
+            <param name="img">Reference to the an image which contains the image to be scanned for number plates. </param>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindFirst(gx.gxImage)">
+            <summary>Reads the first number plate from the image. </summary>
+            <remarks>By calling the FindFirst function the application can read a number plate from an image. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format. If the current engine is a post process capable engine and it has post process engines, the FindFirst function calls the post process engine selected by the main engine after calling the FindFirst function of the main engine. After calling the post process engine the ppengine property of the CMANPR modul will store the name of the post process engine.</remarks>
+            <param name="img">Reference to an image which contains the image to be scanned for number plates. </param>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindNext">
+            <summary>Reads the next number plate from the image. </summary>
+            <remarks>By calling the <see cref="M:cm.cmAnpr.FindNext"/> function the application can read additional number plates from an image. An error occurs if an application calls the <see cref="M:cm.cmAnpr.FindNext"/> function before it calls the <see cref="M:cm.cmAnpr.FindFirst(gx.gxImageData)"/> function. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format. If the current engine is a post process capable engine and it has post process engines, the FindNext function calls the post process engine selected by the main engine after calling the FindNext function of the main engine. After calling the post process engine the ppengine property of the CMANPR modul will store the name of the post process engine.</remarks>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindFirstV(gx.gxImageData,gx.gxVariant)">
+            <summary>Reads the first number plate from the image. </summary>
+            <remarks><p>The result is in gxVariant format.</p><p>By calling the <see cref="M:cm.cmAnpr.FindFirstV(gx.gxImageData,gx.gxVariant)"/> function the application can read a number plate from an image. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format. If the current engine is a post process capable engine and it has post process engines, the FindFirstV function calls the post process engine selected by the main engine after calling the FindFirstV function of the main engine. After calling the post process engine the ppengine property of the CMANPR modul will store the name of the post process engine.</p></remarks>
+            <param name="img">Reference to an image which contains the image to be scanned for number plates. </param>
+            <param name="result">The root of the result tree. The result is in gxVariant format. </param>
+            <returns>True if a plate is found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindFirstV(gx.gxImage,gx.gxVariant)">
+            <summary>Reads the first number plate from the image. </summary>
+            <remarks><p>The result is in gxVariant format.</p><p>By calling the <see cref="M:cm.cmAnpr.FindFirstV(gx.gxImageData,gx.gxVariant)"/> function the application can read a number plate from an image. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format. If the current engine is a post process capable engine and it has post process engines, the FindFirstV function calls the post process engine selected by the main engine after calling the FindFirstV function of the main engine. After calling the post process engine the ppengine property of the CMANPR modul will store the name of the post process engine.</p></remarks>
+            <param name="img">Reference to an image which contains the image to be scanned for number plates. </param>
+            <param name="result">The root of the result tree. The result is in gxVariant format. </param>
+            <returns>True if a plate is found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindNextV(gx.gxVariant)">
+            <summary>Reads the next number plate from the image. </summary>
+            <remarks><p>The result is in gxVariant format.</p><p>By calling the <see cref="M:cm.cmAnpr.FindNextV(gx.gxVariant)"/> function the application can read additional number plates from an image. An error occurs if an application calls the <see cref="M:cm.cmAnpr.FindNextV(gx.gxVariant)"/> function before it calls the <see cref="M:cm.cmAnpr.FindFirstV(gx.gxImageData,gx.gxVariant)"/> function. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format. If the current engine is a post process capable engine and it has post process engines, the FindNextV function calls the post process engine selected by the main engine after calling the FindNextV function of the main engine. After calling the post process engine the ppengine property of the CMANPR modul will store the name of the post process engine.</p></remarks>
+            <param name="result">The root of the result tree. The result is in gxVariant format. </param>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindFirstPP(gx.gxImageData,System.Boolean)">
+            <summary>Reads the first number plate from the image or returns the post process engine name. </summary>
+            <remarks>By calling the <see cref="M:cm.cmAnpr.FindFirstPP(gx.gxImageData,System.Boolean)"/> function the application can read a number plate from an image. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format.</remarks>
+            <param name="img">Reference to the an image which contains the image to be scanned for number plates. </param>
+            <param name="b_localpostprocess">If true, the engine calls the locally installed post process engine. </param>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindFirstPP(gx.gxImage,System.Boolean)">
+            <summary>Reads the first number plate from the image or returns the post process engine name. </summary>
+            <remarks>By calling the <see cref="M:cm.cmAnpr.FindFirstPP(gx.gxImageData,System.Boolean)"/> function the application can read a number plate from an image. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format.</remarks>
+            <param name="img">Reference to an image which contains the image to be scanned for number plates. </param>
+            <param name="b_localpostprocess">If true, the engine calls the locally installed post process engine. </param>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindNextPP(System.Boolean)">
+            <summary>Reads the next number plate from the image. </summary>
+            <remarks>By calling the cm_findnextPP() function the application can read additional number plates from an image. An error occurs if an application calls the cm_findnextPP() function before it calls the cm_findfirstPP() function. The function returns the character tips of the number plate, and the text of the plate in ASCII and Unicode string format.</remarks>
+            <param name="b_localpostprocess">If true, the engine calls the locally installed post process engine. </param>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetPPEngine">
+            <summary>Returns the name of the post process engine after calling of the FindFirstPP function. </summary>
+            <returns>The name of the post process engine. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindEmptyAdr">
+            <summary>Reads the empty ADR plate from the image. </summary>
+            <remarks>By calling the <see cref="M:cm.cmAnpr.FindEmptyAdr"/> function the application can read empty ADR plate from an image. An error occurs if an application calls the <see cref="M:cm.cmAnpr.FindEmptyAdr"/> function before it calls the <see cref="M:cm.cmAnpr.FindFirst(gx.gxImageData)"/> function.</remarks>
+            <returns>True if plate found. On error false is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetText">
+            <summary>Returns the text of the last result (Unicode version). </summary>
+            <returns>The text of the last result or an empty string. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetTextA">
+            <summary>Returns the ASCII text of the last result. </summary>
+            <returns>The ASCII text of the last result or an empty string. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetFrame">
+            <summary>Returns the coordinates of the plate frame. </summary>
+            <returns>The coordinates of the plate frame. On error an empty structure is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetBkColor">
+            <summary>Returns the background color of the plate. </summary>
+            <returns>The background color in BGR format. On error -1 is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetColor">
+            <summary>Returns the color of the plate. </summary>
+            <returns>The plate color in BGR format. On error -1 is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetConfidence">
+            <summary>Returns the confidence level of the plate. </summary>
+            <returns>The confidence level. On error -1 is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetType">
+            <summary>Returns the type of the plate. </summary>
+            <returns>The plate type. On error -1 is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetNTips">
+            <summary>Returns the number of tips in the last result. </summary>
+            <returns>The number of tips. On error -1 is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetTip(System.Int32)">
+            <summary>Returns the requested character of the tip. </summary>
+            <param name="ix">Index of the character. </param>
+            <returns>The requested character. On error an empty structure is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetNCharacters">
+            <summary>Returns the number of characters in the last result. </summary>
+            <returns>The number of characters. On error -1 is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetCharacter(System.Int32)">
+            <summary>Returns the requested character of the last result. </summary>
+            <param name="ix">Index of the character. </param>
+            <returns>The requested character. On error an empty structure is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.FindEngines(System.Int32)">
+            <summary>Returns the installed engines in the system (Unicode version). </summary>
+            <param name="max_engines">The maximal number of engines in the array. </param>
+            <returns>The array of the names of engines found. On error an empty array is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetEngineProperties(System.Boolean)">
+            <summary>Gets the properties and their values of the current engine (optional). </summary>
+            <param name="b_value">The function returns the property names with or without the values of the properties. </param>
+            <returns>The array of the properties and their values. On error an empty array is returned or an exception is thrown. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.LRText2Display(System.String)">
+            <summary>Converting license plate text that contains Arabic letters according to the character order as on the license plate. </summary>
+            <remarks>This option is useful when displaying (or writing to file)the license plate characters in the original character order.</remarks>
+            <param name="lrtext">Text read from left to right. </param>
+            <returns>The displayable lrtext. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetCountryCode(System.Int32,System.Int32)">
+            <summary>Gets the given type country code name for the type value from the anpr result. </summary>
+            <param name="type">Type parameter from the ANPR result. See <see cref="T:cm.cmNP"/> structure. </param>
+            <param name="cctype">Country code type. See <see cref="T:cm.CC_TYPE"/> enumeration. </param>
+            <returns>The country code name. </returns>
+        </member>
+        <member name="M:cm.cmAnpr._get_handle">
+            <summary>Returns the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <returns>Current value. </returns>
+        </member>
+        <member name="M:cm.cmAnpr._set_handle(System.UInt32)">
+            <summary>Modifies the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:cm.cmAnpr.Open(System.String,System.String)">
+            <summary>Opens a GX system compatible module (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <param name="groupname">Property place in the property tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.Open(System.String)">
+            <summary>Opens a GX system compatible module with the default properties (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.Close">
+            <summary>Closes a previously opened module. </summary>
+            <remarks>It decreases the reference counter of the handle. The function closes the module if required (in case when the reference counter becames zero).</remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.IsValid">
+            <summary>Checks if the handle of the module is valid. </summary>
+            <returns>In case of existing handle the return value is true. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.Call(System.Int32,System::IntPtr)">
+            <summary>Calls a process of the module with its parameters. </summary>
+            <remarks>The functions and parameters usable inside the modules can be found in the documentation of the modules. The headers given with the modules contain inline functions, which make easier to access the functions of the module.</remarks>
+            <param name="callcode">Call code for the function (GX_CALL_xxx call codes). </param>
+            <param name="params">Parameters to give for the function (GX_PARM_xxx structures). </param>
+            <returns>Module defined, usually success is true. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetProperty(System.String)">
+            <summary>Gets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>Value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetPropertyInt(System.String)">
+            <summary>Gets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetPropertyFloat(System.String)">
+            <summary>Gets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The floating-point value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.GetPropertyVersion(System.String)">
+            <summary>Gets a version property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.SetProperty(System.String,System.String)">
+            <summary>Sets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="str">Value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.SetProperty(System.String,System.Int32)">
+            <summary>Sets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="ivalue">An integer value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.SetProperty(System.String,System.Double)">
+            <summary>Sets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="fvalue">A floating-point value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.SaveProperties(System.String,System.Int32)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <param name="level">Higher numbers give more details (0 = basic properties, 100 = all properties). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.SaveProperties(System.String)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.MPStartTransaction">
+            <summary>It starts the property transaction. </summary>
+            <remarks><p>The module accepts but doesn't update properties (setmoduleproperty). You must use 'gx_mpcommit' to update these properties. <p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr.MPCommit">
+            <summary>It ends the property transaction and updates your changes to module. </summary>
+            <remarks><p><p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:cm.cmAnpr._Dispose">
+        </member>
+        <member name="M:cm.cmAnpr._NoResultCheck">
+            <summary>Checks for available result. </summary>
+            <remarks>If no available result an exception is thrown. </remarks>
+        </member>
+        <member name="T:gx.gxDeviceInfo">
+            <summary>Class for the device information (Unicode version). </summary>
+        </member>
+        <member name="F:gx.gxDeviceInfo.type">
+        </member>
+        <member name="F:gx.gxDeviceInfo.devname">
+        </member>
+        <member name="F:gx.gxDeviceInfo.serial">
+        </member>
+        <member name="F:gx.gxDeviceInfo.priority">
+        </member>
+        <member name="M:gx.gxDeviceInfo.#ctor">
+            <summary>Initializes the class. </summary>
+        </member>
+        <member name="M:gx.gxDeviceInfo.#ctor(gx.gxDeviceInfo)">
+            <summary>Copy constructor. </summary>
+            <param name="src">The source information structure. </param>
+        </member>
+        <member name="M:gx.gxDeviceInfo.Dispose">
+            <summary>Destructs the class. </summary>
+        </member>
+        <member name="M:gx.gxDeviceInfo.#ctor">
+        </member>
+        <member name="M:gx.gxDeviceInfo.SetSerial(System.UInt32)">
+            <summary>Sets the serial field. </summary>
+            <param name="_serial">Serial of the device. </param>
+        </member>
+        <member name="M:gx.gxDeviceInfo.SetPriority(System.Int32)">
+            <summary>Sets the priority field. </summary>
+            <param name="_priority">Priority level of the device. </param>
+        </member>
+        <member name="M:gx.gxDeviceInfo.GetSerial">
+            <summary>Retrieves the serial field. </summary>
+            <returns>The serial number of the device. </returns>
+        </member>
+        <member name="M:gx.gxDeviceInfo.GetPriority">
+            <summary>Retrieves the priority field. </summary>
+            <returns>The priority level of the device. </returns>
+        </member>
+        <member name="M:gx.gxDeviceInfo.SetType(System.String)">
+            <summary>Updates the type field. </summary>
+            <param name="_type">Type of the device. </param>
+        </member>
+        <member name="M:gx.gxDeviceInfo.SetName(System.String)">
+            <summary>Updates the name field. </summary>
+            <param name="_devname">Name of the device. </param>
+        </member>
+        <member name="M:gx.gxDeviceInfo.GetType">
+            <summary>Retrieves the type field. </summary>
+            <returns>Type of the device. </returns>
+        </member>
+        <member name="M:gx.gxDeviceInfo.GetName">
+            <summary>Retrieves the name field. </summary>
+            <returns>Name of the device. </returns>
+        </member>
+        <member name="M:gx.gxDeviceInfo._Dispose">
+        </member>
+        <member name="T:gx.gxException">
+            <summary>The exception thrown when a GX error occurs. </summary>
+        </member>
+        <member name="M:gx.gxException.#ctor">
+            <summary>Initializes the class. </summary>
+            <remarks>Constructor implementation for the <see cref="T:gx.gxException"/> class in the .net.</remarks>
+        </member>
+        <member name="T:gx.gxHandle">
+            <summary>The handler class of the GX system. </summary>
+            <remarks>It is the base class for most of the other classes and can be used as handle for the GX modules. </remarks>
+        </member>
+        <member name="M:gx.gxHandle._get_handle">
+            <summary>Returns the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <returns>Current value. </returns>
+        </member>
+        <member name="M:gx.gxHandle._set_handle(System.UInt32)">
+            <summary>Modifies the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:gx.gxHandle.#ctor">
+            <summary>Initializes the class. </summary>
+            <remarks>The class will be invalid. Use the Open method for module opening. </remarks>
+        </member>
+        <member name="M:gx.gxHandle.Dispose">
+            <summary>Destructs the class. </summary>
+            <remarks>It decreases the reference counter of the handle. The function closes the module if required (in case when the reference counter becames zero). </remarks>
+        </member>
+        <member name="M:gx.gxHandle.#ctor">
+        </member>
+        <member name="M:gx.gxHandle.Open(System.String,System.String)">
+            <summary>Opens a GX system compatible module (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <param name="groupname">Property place in the property tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.Open(System.String)">
+            <summary>Opens a GX system compatible module with the default properties (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.Close">
+            <summary>Closes a previously opened module. </summary>
+            <remarks>It decreases the reference counter of the handle. The function closes the module if required (in case when the reference counter becames zero).</remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.IsValid">
+            <summary>Checks if the handle of the module is valid. </summary>
+            <returns>In case of existing handle the return value is true. </returns>
+        </member>
+        <member name="M:gx.gxHandle.Call(System.Int32,System::IntPtr)">
+            <summary>Calls a process of the module with its parameters. </summary>
+            <remarks>The functions and parameters usable inside the modules can be found in the documentation of the modules. The headers given with the modules contain inline functions, which make easier to access the functions of the module.</remarks>
+            <param name="callcode">Call code for the function (GX_CALL_xxx call codes). </param>
+            <param name="params">Parameters to give for the function (GX_PARM_xxx structures). </param>
+            <returns>Module defined, usually success is true. </returns>
+        </member>
+        <member name="M:gx.gxHandle.GetProperty(System.String)">
+            <summary>Gets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>Value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.GetPropertyInt(System.String)">
+            <summary>Gets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.GetPropertyFloat(System.String)">
+            <summary>Gets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The floating-point value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.GetPropertyVersion(System.String)">
+            <summary>Gets a version property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.SetProperty(System.String,System.String)">
+            <summary>Sets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="str">Value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.SetProperty(System.String,System.Int32)">
+            <summary>Sets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="ivalue">An integer value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.SetProperty(System.String,System.Double)">
+            <summary>Sets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="fvalue">A floating-point value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.SaveProperties(System.String,System.Int32)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <param name="level">Higher numbers give more details (0 = basic properties, 100 = all properties). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.SaveProperties(System.String)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.MPStartTransaction">
+            <summary>It starts the property transaction. </summary>
+            <remarks><p>The module accepts but doesn't update properties (setmoduleproperty). You must use 'gx_mpcommit' to update these properties. <p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle.MPCommit">
+            <summary>It ends the property transaction and updates your changes to module. </summary>
+            <remarks><p><p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxHandle._Dispose">
+        </member>
+        <member name="T:gx.gxImage">
+            <summary>Class for the IMAGE functions. </summary>
+        </member>
+        <member name="M:gx.gxImage._get_image">
+            <summary>Returns the local image pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <returns>Current value. </returns>
+        </member>
+        <member name="M:gx.gxImage._set_image(System.IntPtr)">
+            <summary>Modifies the local image pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:gx.gxImage.ref">
+            <summary>Returns the reference pointer. </summary>
+            <remarks><p><p>gxIMAGE, gx_refimage, gx_unrefimage </p></p></remarks>
+            <returns>Reference pointer of the gxIMAGE structure </returns>
+        </member>
+        <member name="M:gx.gxImage.simage">
+            <summary>Returns the size of the image in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of the image in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImage.format">
+            <summary>Returns the pixel format of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Pixel format of the image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </returns>
+        </member>
+        <member name="M:gx.gxImage.xsize">
+            <summary>Returns the horizontal size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImage.ysize">
+            <summary>Returns the vertical size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImage.sline">
+            <summary>Returns the size of a row in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of a row in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImage.xres">
+            <summary>Returns the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImage.yres">
+            <summary>Returns the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImage.xres(System.Int32)">
+            <summary>Sets the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <param name="_xres">Horizontal resolution to set. </param>
+        </member>
+        <member name="M:gx.gxImage.yres(System.Int32)">
+            <summary>Sets the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <param name="_yres">Vertical resolution to set. </param>
+        </member>
+        <member name="M:gx.gxImage.GetRef">
+            <summary>Returns the reference pointer. </summary>
+            <remarks><p><p>gxIMAGE, gx_refimage, gx_unrefimage </p></p></remarks>
+            <returns>Reference pointer of the gxIMAGE structure </returns>
+        </member>
+        <member name="M:gx.gxImage.GetPixels">
+            <summary>Returns the pointer to the image pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Pointer to the image pixels. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetSImage">
+            <summary>Returns size of the image in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of the image in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetPixelFormat">
+            <summary>Returns the pixel format of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Pixel format of the image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </returns>
+        </member>
+        <member name="M:gx.gxImage.GetXSize">
+            <summary>Returns the horizontal size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetYSize">
+            <summary>Returns the vertical size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetSLine">
+            <summary>Returns the size of a row in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of a row in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetXRes">
+            <summary>Returns the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetYRes">
+            <summary>Returns the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImage.SetXRes(System.Int32)">
+            <summary>Sets the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <param name="_xres">Horizontal resolution to set. </param>
+            <returns>The function always returns true. </returns>
+        </member>
+        <member name="M:gx.gxImage.SetYRes(System.Int32)">
+            <summary>Sets the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <param name="_yres">Vertical resolution to set. </param>
+            <returns>The function always returns true. </returns>
+        </member>
+        <member name="M:gx.gxImage.#ctor">
+            <summary>Class initialization with default properties. </summary>
+        </member>
+        <member name="M:gx.gxImage.#ctor(System.String)">
+            <summary>Class initialization with the place of the properties (Unicode version). </summary>
+            <param name="propname">Place of the properties in the property tree (Name of a property group). </param>
+        </member>
+        <member name="M:gx.gxImage.#ctor(System.String,System.String)">
+            <summary>Class initialization with the place of the properties and name of the module (Unicode version). </summary>
+            <param name="propname">Place of properties in property tree (Name of a property group). </param>
+            <param name="modname">Name of the module. </param>
+        </member>
+        <member name="M:gx.gxImage.#ctor(gx.gxImageHandler)">
+            <summary>Class initialization with previously initialized image handler. </summary>
+            <param name="ih">Previously intialized image handler. </param>
+        </member>
+        <member name="M:gx.gxImage.#ctor(gx.gxImage)">
+            <summary>Class initialization with previously initialized image. </summary>
+            <param name="src">Previously intialized image. </param>
+        </member>
+        <member name="M:gx.gxImage.Dispose">
+            <summary>Class termination. </summary>
+        </member>
+        <member name="M:gx.gxImage.#ctor">
+        </member>
+        <member name="M:gx.gxImage.GetPixelSize">
+            <summary>Returns the size of a current format pixel in bytes. </summary>
+            <returns>Size of the pixel in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImage.Create(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Makes an image with proper size and format. </summary>
+            <param name="format">Pixel format (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <param name="xsize">Horizontal size of image in pixels. </param>
+            <param name="ysize">Vertical size of image in pixels. </param>
+            <param name="sline">Length of a row in bytes (min.: xsize * size of a pixel in bytes). If zero the system computes the correct value. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Convert(gx.gxImageData,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Converts an image to a specific format and size. </summary>
+            <param name="src">Reference to the source image data. </param>
+            <param name="format">Pixel format of the destination image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <param name="xsize">Horizontal size of the destination image in pixels. </param>
+            <param name="ysize">Vertical size of the destination image in pixels. </param>
+            <param name="sline">Length of a row in bytes (min.: xsize * size of a pixel in bytes). If zero the system computes the correct value. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Convert(gx.gxImage,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Converts an image to a specific format and size. </summary>
+            <param name="src">Pointer to the source image. </param>
+            <param name="format">Pixel format of the destination image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <param name="xsize">Horizontal size of the destination image in pixels. </param>
+            <param name="ysize">Vertical size of the destination image in pixels. </param>
+            <param name="sline">Length of a row in bytes (min.: xsize * size of a pixel in bytes). If zero the system computes the correct value. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Convert(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Converts an image to a specific format and size. </summary>
+            <param name="format">Pixel format of the destination image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <param name="xsize">Horizontal size of the destination image in pixels. </param>
+            <param name="ysize">Vertical size of the destination image in pixels. </param>
+            <param name="sline">Length of a row in bytes (min.: xsize * size of a pixel in bytes). If zero the system computes the correct value. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Convert(System.Int32)">
+            <summary>Converts an image to a specific format. </summary>
+            <param name="format">Pixel format of the destination image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Copy(gx.gxImageData)">
+            <summary>Copies an image to the class. </summary>
+            <param name="src">Reference of the source image. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Copy(gx.gxImage)">
+            <summary>Copies an image to the class. </summary>
+            <param name="src">Pointer of the source image. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Zoom(gx.gxImageData,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Zooms an image to a specified size. </summary>
+            <param name="src">Reference to the source image data. </param>
+            <param name="xsize">Horizontal size of the destination area. </param>
+            <param name="ysize">Vertical size of the destination area. </param>
+            <param name="sline">Size of a row of the destination area. </param>
+            <param name="sx1_8">Left coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <param name="sy1_8">Top coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <param name="sx2_8">Right coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <param name="sy2_8">Bottom coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Zoom(gx.gxImageData,System.Int32,System.Int32,System.Int32)">
+            <summary>Zooms an image to a specified size. </summary>
+            <param name="src">Reference to the source image data. </param>
+            <param name="xsize">Horizontal size of the destination area. </param>
+            <param name="ysize">Vertical size of the destination area. </param>
+            <param name="sline">Size of a row of the destination area. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Zoom(gx.gxImage,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Zooms an image to a specified size. </summary>
+            <param name="src">Reference to the source image. </param>
+            <param name="xsize">Horizontal size of the destination area. </param>
+            <param name="ysize">Vertical size of the destination area. </param>
+            <param name="sline">Size of a row of the destination area. </param>
+            <param name="sx1_8">Left coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <param name="sy1_8">Top coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <param name="sx2_8">Right coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <param name="sy2_8">Bottom coordinate of the zoomed area (shifted left with 8 bit = 256) </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Zoom(gx.gxImage,System.Int32,System.Int32,System.Int32)">
+            <summary>Zooms an image to a specified size. </summary>
+            <param name="src">Reference to the source image. </param>
+            <param name="xsize">Horizontal size of the destination area. </param>
+            <param name="ysize">Vertical size of the destination area. </param>
+            <param name="sline">Size of a row of the destination area. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Rotate(gx.gxImageData,System.Int32)">
+            <summary>Rotates an image to a specified degree. </summary>
+            <param name="src">Reference to the source image data. </param>
+            <param name="degree">Degree (Must be 0, 90, 180, 270). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Rotate(gx.gxImage,System.Int32)">
+            <summary>Rotates an image to a specified degree. </summary>
+            <param name="src">Reference to the source image. </param>
+            <param name="degree">Degree (Must be 0, 90, 180, 270). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Mirror(gx.gxImageData,System.Int32)">
+            <summary>Mirrors an image to a specified mode. </summary>
+            <param name="src">Reference to an image data. </param>
+            <param name="flags">Mirror flags. It can be <see cref="F:gx.GX_MIRRORFLAGS.GX_MIRROR_HORIZONTAL"/> or/and <see cref="F:gx.GX_MIRRORFLAGS.GX_MIRROR_VERTICAL"/>. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Mirror(gx.gxImage,System.Int32)">
+            <summary>Mirrors an image to a specified mode. </summary>
+            <param name="src">Reference to an image. </param>
+            <param name="flags">Mirror flags. It can be <see cref="F:gx.GX_MIRRORFLAGS.GX_MIRROR_HORIZONTAL"/> or/and <see cref="F:gx.GX_MIRRORFLAGS.GX_MIRROR_VERTICAL"/>. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Mirror(System.Int32)">
+            <summary>Mirrors an image to a specified mode. </summary>
+            <param name="flags">Mirror flags. It can be <see cref="F:gx.GX_MIRRORFLAGS.GX_MIRROR_HORIZONTAL"/> or/and <see cref="F:gx.GX_MIRRORFLAGS.GX_MIRROR_VERTICAL"/>. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Load(System.String,System.Int32,gx.gxVariant,gx.gxVariant)">
+            <summary>Loads an image with comments from a mass storage device and converts it to a specific pixel format (Unicode version). </summary>
+            <remarks>On loading a RAW image, the image must be created with correct parameters (sline parameter also included). The format parameter of the <see cref="M:gx.gxImage.Load(System.String,System.Int32,gx.gxVariant,gx.gxVariant)"/> must be -1 for RAW images.</remarks>
+            <param name="filename">Name of the image file. </param>
+            <param name="pixelformat">The specific pixel format. Giving <see cref="F:gx.GX_PIXELFORMATS.GX_GRAY"/> converts a color image to grayscale (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <param name="properties">Properties for the image loader. </param>
+            <param name="comments">Comments of the image. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Load(System.String,System.Int32)">
+            <summary>Loads an image from a mass storage device and converts it to a specific pixel format (Unicode version). </summary>
+            <remarks>On loading a RAW image, the image must be created with correct parameters (sline parameter also included). The format parameter of the <see cref="M:gx.gxImage.Load(System.String,System.Int32,gx.gxVariant,gx.gxVariant)"/> must be -1 for RAW images.</remarks>
+            <param name="filename">Name of the image file. </param>
+            <param name="pixelformat">The specific pixel format. Giving <see cref="F:gx.GX_PIXELFORMATS.GX_GRAY"/> converts a color image to grayscale (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Load(System.String)">
+            <summary>Loads an image from a mass storage device (Unicode version). </summary>
+            <param name="filename">Name of the image file. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Save(System.String,System.Int32,gx.gxVariant,gx.gxVariant)">
+            <summary>Saves an image to a mass storage device in the specific file format (Unicode version). </summary>
+            <param name="filename">Name of the image file. </param>
+            <param name="fileformat">Format of the image file (see <see cref="T:gx.GX_IMGFILEFORMATS"/>). </param>
+            <param name="properties">Properties for the image writer. It can be empty. </param>
+            <param name="comments">Comments of the image. It can be empty. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Save(System.String,System.Int32)">
+            <summary>Saves an image to a mass storage device in the specific file format (Unicode version). </summary>
+            <param name="filename">Name of the image file. </param>
+            <param name="fileformat">Format of the image file (see <see cref="T:gx.GX_IMGFILEFORMATS"/>). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.LoadFromMem(System.Byte[],System.Int32,gx.gxVariant,gx.gxVariant)">
+            <summary>Loads an image with comments from the memory and converts it to a specific pixel format. </summary>
+            <remarks>On loading a RAW image, the image must be created with correct parameters (sline parameter also included). The format parameter of the <see cref="M:gx.gxImage.LoadFromMem(System.Byte[],System.Int32,gx.gxVariant,gx.gxVariant)"/> must be -1 for RAW images.</remarks>
+            <param name="buffer">The image data. </param>
+            <param name="pixelformat">The specific pixel format. Giving GX_GRAY converts a color image to grayscale (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <param name="properties">Properties for the image loader. </param>
+            <param name="comments">Comments of the image. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SaveToMem(System.Int32,gx.gxVariant,gx.gxVariant)">
+            <summary>Saves an image with comments in a specific file format to a specific memory area. </summary>
+            <param name="fileformat">Format of the image file (see <see cref="T:gx.GX_IMGFILEFORMATS"/>). </param>
+            <param name="properties">Properties for the image writer. It can be empty. </param>
+            <param name="comments">Comments of the image. It can be empty. </param>
+            <returns>Image data. An exception is thrown or null is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.LoadFromMem(System.Byte[],System.Int32)">
+            <summary>Loads an image from the memory and converts it to a specific pixel format. </summary>
+            <remarks>On loading a RAW image, the image must be created with correct parameters (sline parameter also included). The format parameter of the <see cref="M:gx.gxImage.LoadFromMem(System.Byte[],System.Int32,gx.gxVariant,gx.gxVariant)"/> must be -1 for RAW images.</remarks>
+            <param name="buffer">The image data. </param>
+            <param name="pixelformat">The specific pixel format. Giving GX_GRAY converts a color image to grayscale (see <see cref="T:gx.GX_PIXELFORMATS"/>). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SaveToMem(System.Int32)">
+            <summary>Saves an image in a specific file format to a specific memory area. </summary>
+            <param name="fileformat">Format of the image file (see <see cref="T:gx.GX_IMGFILEFORMATS"/>). </param>
+            <returns>Image data. An exception is thrown or null is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.IsValid">
+            <summary>Checks if the image structure and the handle are valid. </summary>
+            <returns>In case of valid image the return value is non-zero. </returns>
+        </member>
+        <member name="M:gx.gxImage.DisplayImage(System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>Displays an image. </summary>
+            <param name="hdc">Handle of device context. </param>
+            <param name="x">X1 coordinate of display. </param>
+            <param name="y">Y1 coordinate of display. </param>
+            <param name="xsize">Displayed horizontal size of image. </param>
+            <param name="ysize">Displayed vertical size of image. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Copy">
+            <summary>Copies the image to the clipboard. </summary>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Paste">
+            <summary>Inserts an image from the clipboard. </summary>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.FromVariant(gx.gxVariant)">
+            <summary>Loads an embedded image from a variant. </summary>
+            <param name="variant">Variant with an embedded image. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.ToVariant(System.Int32)">
+            <summary>Embedds an image into a variant. </summary>
+            <param name="varid">The id for the created variant. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.TestImageFileFormat(System.Byte[])">
+            <summary>Tests if a memory area contains an image file. </summary>
+            <param name="buffer">The file data. </param>
+            <returns>An exception is thrown or 0 is returned in case of error, -1 is returned for unknown file type. </returns>
+        </member>
+        <member name="M:gx.gxImage.TestImageFileFormat(System.String)">
+            <summary>Tests if a file is an image file. </summary>
+            <param name="filename">Name of the file to test.</param>
+            <returns>An exception is thrown or 0 is returned in case of error, -1 is returned for unknown file type. </returns>
+        </member>
+        <member name="M:gx.gxImage._get_handle">
+            <summary>Returns the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <returns>Current value. </returns>
+        </member>
+        <member name="M:gx.gxImage._set_handle(System.UInt32)">
+            <summary>Modifies the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:gx.gxImage.Open(System.String,System.String)">
+            <summary>Opens a GX system compatible module (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <param name="groupname">Property place in the property tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Open(System.String)">
+            <summary>Opens a GX system compatible module with the default properties (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Close">
+            <summary>Closes a previously opened module. </summary>
+            <remarks>It decreases the reference counter of the handle. The function closes the module if required (in case when the reference counter becames zero).</remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.Call(System.Int32,System::IntPtr)">
+            <summary>Calls a process of the module with its parameters. </summary>
+            <remarks>The functions and parameters usable inside the modules can be found in the documentation of the modules. The headers given with the modules contain inline functions, which make easier to access the functions of the module.</remarks>
+            <param name="callcode">Call code for the function (GX_CALL_xxx call codes). </param>
+            <param name="params">Parameters to give for the function (GX_PARM_xxx structures). </param>
+            <returns>Module defined, usually success is true. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetProperty(System.String)">
+            <summary>Gets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>Value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetPropertyInt(System.String)">
+            <summary>Gets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetPropertyFloat(System.String)">
+            <summary>Gets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The floating-point value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.GetPropertyVersion(System.String)">
+            <summary>Gets a version property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SetProperty(System.String,System.String)">
+            <summary>Sets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="str">Value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SetProperty(System.String,System.Int32)">
+            <summary>Sets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="ivalue">An integer value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SetProperty(System.String,System.Double)">
+            <summary>Sets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="fvalue">A floating-point value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SaveProperties(System.String,System.Int32)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <param name="level">Higher numbers give more details (0 = basic properties, 100 = all properties). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.SaveProperties(System.String)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.MPStartTransaction">
+            <summary>It starts the property transaction. </summary>
+            <remarks><p>The module accepts but doesn't update properties (setmoduleproperty). You must use 'gx_mpcommit' to update these properties. <p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage.MPCommit">
+            <summary>It ends the property transaction and updates your changes to module. </summary>
+            <remarks><p><p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImage._set_image(gxIMAGE *)">
+            <summary>Modifies the local image pointer. </summary>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:gx.gxImage._Dispose">
+        </member>
+        <member name="T:gx.gxImageData">
+            <summary>Class for the IMAGE data and some low-level functions. </summary>
+            <remarks><p><p><see cref="T:gx.gxImage"/></p></p></remarks>
+        </member>
+        <member name="M:gx.gxImageData._get_image">
+            <summary>Returns the local image data pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <returns>Current value. </returns>
+        </member>
+        <member name="M:gx.gxImageData._set_image(System.IntPtr)">
+            <summary>Modifies the local image data pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:gx.gxImageData.#ctor">
+            <summary>Class initialization. </summary>
+        </member>
+        <member name="M:gx.gxImageData.Dispose">
+            <summary>Class termination. </summary>
+        </member>
+        <member name="M:gx.gxImageData.#ctor">
+        </member>
+        <member name="M:gx.gxImageData.ref">
+            <summary>It returns the reference pointer. </summary>
+            <remarks><p><p>gxIMAGE, gx_refimage, gx_unrefimage </p></p></remarks>
+            <returns>Reference pointer of the gxIMAGE structure </returns>
+        </member>
+        <member name="M:gx.gxImageData.simage">
+            <summary>It returns the size of the image in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of the image in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImageData.format">
+            <summary>It returns the pixel format of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Pixel format of the image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </returns>
+        </member>
+        <member name="M:gx.gxImageData.xsize">
+            <summary>It returns the horizontal size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImageData.ysize">
+            <summary>It returns the vertical size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImageData.sline">
+            <summary>It returns the size of a row in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of a row in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImageData.xres">
+            <summary>It returns the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImageData.yres">
+            <summary>It returns the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImageData.xres(System.Int32)">
+            <summary>The function sets the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE</p></p></remarks>
+            <param name="_xres">Value to set. </param>
+        </member>
+        <member name="M:gx.gxImageData.yres(System.Int32)">
+            <summary>The function sets the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE</p></p></remarks>
+            <param name="_yres">Value to set. </param>
+        </member>
+        <member name="M:gx.gxImageData.GetRef">
+            <summary>It returns the reference pointer. </summary>
+            <remarks><p><p>gxIMAGE, gx_refimage, gx_unrefimage </p></p></remarks>
+            <returns>Reference pointer of the gxIMAGE structure </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetPixels">
+            <summary>It returns the pointer to the image pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Pointer to the image pixels. </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetSImage">
+            <summary>It returns size of the image in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of the image in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetPixelFormat">
+            <summary>It returns the pixel format of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Pixel format of the image (see <see cref="T:gx.GX_PIXELFORMATS"/>). </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetXSize">
+            <summary>It returns the horizontal size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetYSize">
+            <summary>It returns the vertical size of the image in pixels. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical size of the image in pixels. </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetSLine">
+            <summary>It returns the size of a row in bytes. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Size of a row in bytes. </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetXRes">
+            <summary>It returns the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Horizontal resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImageData.GetYRes">
+            <summary>It returns the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE </p></p></remarks>
+            <returns>Vertical resolution of the image. </returns>
+        </member>
+        <member name="M:gx.gxImageData.SetXRes(System.Int32)">
+            <summary>The function sets the horizontal resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE</p></p></remarks>
+            <param name="_xres">Value to set. </param>
+            <returns>The function always returns true. </returns>
+        </member>
+        <member name="M:gx.gxImageData.SetYRes(System.Int32)">
+            <summary>The function sets the vertical resolution of the image. </summary>
+            <remarks><p><p>gxIMAGE</p></p></remarks>
+            <param name="_yres">Value to set. </param>
+            <returns>The function always returns true. </returns>
+        </member>
+        <member name="M:gx.gxImageData._Dispose">
+        </member>
+        <member name="T:gx.gxImageHandler">
+            <summary>Class for the IMAGE functions. </summary>
+        </member>
+        <member name="M:gx.gxImageHandler.#ctor">
+            <summary>Class initialization with default properties. </summary>
+        </member>
+        <member name="M:gx.gxImageHandler.#ctor(System.String,System.String)">
+            <summary>Class initialization with place of the properties and name of the module. </summary>
+            <remarks>(Unicode version) </remarks>
+            <param name="propname">Place of the properties in the property tree (Name of a property group). </param>
+            <param name="modname">Name of the module. </param>
+        </member>
+        <member name="M:gx.gxImageHandler.#ctor(System.String)">
+            <summary>Class initialization with place of the properties. </summary>
+            <remarks>(Unicode version) </remarks>
+            <param name="propname">Place of the properties in the property tree (Name of a property group). </param>
+        </member>
+        <member name="M:gx.gxImageHandler.#ctor(gx.gxImageHandler)">
+            <summary>Class initalization with another image handle. </summary>
+            <param name="src">Source image handle. The reference of this image handle will be increased. </param>
+        </member>
+        <member name="M:gx.gxImageHandler._get_handle">
+            <summary>Returns the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <returns>Current value. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler._set_handle(System.UInt32)">
+            <summary>Modifies the local handle pointer. </summary>
+            <remarks><p><p>Do not use this function directly.</p></p></remarks>
+            <param name="ptr">New value. </param>
+        </member>
+        <member name="M:gx.gxImageHandler.Open(System.String,System.String)">
+            <summary>Opens a GX system compatible module (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <param name="groupname">Property place in the property tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.Open(System.String)">
+            <summary>Opens a GX system compatible module with the default properties (Unicode version). </summary>
+            <param name="modulename">Name of the module. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.Close">
+            <summary>Closes a previously opened module. </summary>
+            <remarks>It decreases the reference counter of the handle. The function closes the module if required (in case when the reference counter becames zero).</remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.IsValid">
+            <summary>Checks if the handle of the module is valid. </summary>
+            <returns>In case of existing handle the return value is true. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.Call(System.Int32,System::IntPtr)">
+            <summary>Calls a process of the module with its parameters. </summary>
+            <remarks>The functions and parameters usable inside the modules can be found in the documentation of the modules. The headers given with the modules contain inline functions, which make easier to access the functions of the module.</remarks>
+            <param name="callcode">Call code for the function (GX_CALL_xxx call codes). </param>
+            <param name="params">Parameters to give for the function (GX_PARM_xxx structures). </param>
+            <returns>Module defined, usually success is true. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.GetProperty(System.String)">
+            <summary>Gets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>Value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.GetPropertyInt(System.String)">
+            <summary>Gets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.GetPropertyFloat(System.String)">
+            <summary>Gets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The floating-point value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.GetPropertyVersion(System.String)">
+            <summary>Gets a version property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <returns>The integer value of the property or an exception is thrown in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.SetProperty(System.String,System.String)">
+            <summary>Sets a property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="str">Value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.SetProperty(System.String,System.Int32)">
+            <summary>Sets an integer property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="ivalue">An integer value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.SetProperty(System.String,System.Double)">
+            <summary>Sets a floating-point property of the specified module (Unicode version). </summary>
+            <param name="name">Name of the property. </param>
+            <param name="fvalue">A floating-point value of the property. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.SaveProperties(System.String,System.Int32)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <param name="level">Higher numbers give more details (0 = basic properties, 100 = all properties). </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.SaveProperties(System.String)">
+            <summary>Saves the properties of a module stored in the memory to a branch of the property tree stored on a mass storage device (Unicode version). </summary>
+            <param name="name">Place of property in the tree. </param>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.MPStartTransaction">
+            <summary>It starts the property transaction. </summary>
+            <remarks><p>The module accepts but doesn't update properties (setmoduleproperty). You must use 'gx_mpcommit' to update these properties. <p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="M:gx.gxImageHandler.MPCommit">
+            <summary>It ends the property transaction and updates your changes to module. </summary>
+            <remarks><p><p>Not supported by each module! </p></p></remarks>
+            <returns>An exception is thrown or false is returned in case of error. </returns>
+        </member>
+        <member name="T:gx.gxSystem">
+            <summary>Class for the GX-system specific operations. </summary>
+        </member>
+        <member name="M:gx.gxSystem.ClearError">
+            <summary>Clears the thread-local error buffer in the GX system. </summary>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.SetError(System.Int32)">
+            <summary>Overwrites the thread-local error in the GX system. </summary>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.AppendError(System.Int32)">
+            <summary>Appends the thread-local error in the GX system. </summary>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.PrependError(System.Int32)">
+            <summary>Prepends the thread-local error in the GX system. </summary>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.SetError(System.Int32,System.Int32,System.String)">
+            <summary>Updates the thread-local error in the GX system (Unicode version). </summary>
+            <param name="flags">Modifier flags (see <see cref="T:gx.GX_ERROR_FLAGS"/>). </param>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <param name="str">The extension string. (The result will be the system's string plus your extension string.) </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.SetError(System.Int32,System.String)">
+            <summary>Overwrites the thread-local error in the GX system (Unicode version). </summary>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <param name="str">The extension string. (The result will be the system's string plus your extension string.) </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.AppendError(System.Int32,System.String)">
+            <summary>Appends the thread-local error in the GX system (Unicode version). </summary>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <param name="str">The extension string. (The result will be the system's string plus your extension string.) </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.PrependError(System.Int32,System.String)">
+            <summary>Prepends the thread-local error in the GX system (Unicode version). </summary>
+            <param name="code">The error code (see <see cref="T:gx.GX_ERROR_CODES"/>). </param>
+            <param name="str">The extension string. (The result will be the system's string plus your extension string.) </param>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.GetErrorCode">
+            <summary>Getting the error code. </summary>
+            <returns>The error code. </returns>
+        </member>
+        <member name="M:gx.gxSystem.GetErrorString">
+            <summary>Getting the error string in unicode format. </summary>
+            <returns>The error string. </returns>
+        </member>
+        <member name="M:gx.gxSystem.ListDevices(System.UInt32,gx.gxDeviceInfo)">
+            <summary>This function returns a filtered list of the available GX devices. </summary>
+            <param name="flags">Flags for filter class. </param>
+            <param name="filter">The filter class. </param>
+            <returns>The array of founded devices. If an error occurred the function thrown an exception. </returns>
+        </member>
+        <member name="M:gx.gxSystem.PushError">
+            <summary>This function pushes the error code and string to the error stack. </summary>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.PopError">
+            <summary>This function pops the error code and string from the error stack. </summary>
+            <returns>On success: non-zero. </returns>
+        </member>
+        <member name="M:gx.gxSystem.GetSystemInfo(gx.GX_SYSINFO_FLAGS)">
+            <summary>Returns information about the GX system. </summary>
+            <param name="flag">Flag to select the type of the information. </param>
+            <returns>The result depends on the flag parameter. In case of error an exception is thrown. </returns>
+        </member>
+        <member name="gx.GX_ERROR_ENUM">
+        </member>
+        <member name="T:cm.CMANPR_CALL_GROUP_CODES">
+            <summary>Group codes. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_GROUP_CODES.GX_CALL_GROUP_CMANPR">
+            <summary>Group code of the CMANPR module. </summary>
+        </member>
+        <member name="T:cm.CMANPR_CALL_CODES">
+            <summary>Call codes for the ANPR operations. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDFIRST">
+            <summary>Call code for the cm_findfirst() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDNEXT">
+            <summary>Call code for the cm_findnext() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FORMAT">
+            <summary>Call code for the cm_format() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDENGINES">
+            <summary>Call code for the cm_findengines() function (Unicode version). </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDENGINESA">
+            <summary>Call code for the cm_findengines() function (ASCII version). </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDEMPTYADR">
+            <summary>Call code for the cm_findemptyadr() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_GETENGINEPROPERTIES">
+            <summary>Call code for the cm_getengineproperties() function (Unicode version). </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_LRTEXT2DISPLAY">
+            <summary>Call code for the cm_lrtext2display() function (Unicode version). </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDFIRSTV">
+            <summary>Call code for the cm_findfirstV() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDNEXTV">
+            <summary>Call code for the cm_findnextV() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_DUPLICATERESULT">
+            <summary>Call code for the cm_duplicateresult() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDFIRSTPP">
+            <summary>Call code for the cm_findfirstPP() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_FINDNEXTPP">
+            <summary>Call code for the cm_findnextPP() function. </summary>
+        </member>
+        <member name="F:cm.CMANPR_CALL_CODES.CM_CALL_GETCOUNTRYCODE">
+            <summary>Call code for the cm_getcountrycode() function. </summary>
+        </member>
+        <member name="T:cm.CMANPR_ERROR_CODES">
+            <summary>CMANPR error codes. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.GX_EINVALIDENGINE">
+            <summary>Invalid engine. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_DATAFILE_NOT_FOUND">
+            <summary>No data file found. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_DATAFILE_CORRUPTED">
+            <summary>Invalid data file. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_NO_IMAGE">
+            <summary>No image to give for the engine. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_UNKNOWN_PROPERTY">
+            <summary>Invalid engine property. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_HWKEY_OPEN">
+            <summary>Hardware key opening error. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_HWKEY_LOCK">
+            <summary>Hardware key locking error. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_HWKEY_IO">
+            <summary>Hardware key input-output error. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_ENGINE">
+            <summary>Internal engine error. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_BUFFERFULL">
+            <summary>Buffer full. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_INVAL">
+            <summary>Invalid parameter. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_NOMEM">
+            <summary>Memory allocation error. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_INVIMG">
+            <summary>Invalid image. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_GXSD">
+            <summary>GXSD service not installed properly. </summary>
+        </member>
+        <member name="F:cm.CMANPR_ERROR_CODES.CME_UNHANDLED">
+            <summary>Unhandled cmanpr exception. </summary>
+        </member>
+        <member name="T:cm.CC_TYPE">
+            <summary>Country code types. </summary>
+        </member>
+        <member name="F:cm.CC_TYPE.CCT_COUNTRY_SHORT">
+            <summary>Short country name. </summary>
+        </member>
+        <member name="F:cm.CC_TYPE.CCT_COUNTRY_LONG">
+            <summary>Long country name. </summary>
+        </member>
+        <member name="F:cm.CC_TYPE.CCT_STATE_SHORT">
+            <summary>Short state name. </summary>
+        </member>
+        <member name="F:cm.CC_TYPE.CCT_STATE_LONG">
+            <summary>Long state name. </summary>
+        </member>
+        <member name="T:gx.GX_ERROR_CODES">
+            <summary>System and GX-specific error codes. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENOERR">
+            <summary>No Error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENOENT">
+            <summary>Entry not found (ENOENT). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENOMEM">
+            <summary>Memory allocation error (ENOMEM). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EACCES">
+            <summary>Permission denied (EACCES). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EFAULT">
+            <summary>Bad address or program error (EFAULT). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EBUSY">
+            <summary>Resource busy (EBUSY). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EEXIST">
+            <summary>File exists (EEXIST). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENODEV">
+            <summary>No such device (ENODEV). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EINVAL">
+            <summary>Invalid parameter (EINVAL). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ERANGE">
+            <summary>Data out of range (ERANGE). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EDATA">
+            <summary>No data available (Linux - ENODATA). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ECOMM">
+            <summary>Communication error on send (Linux - ECOMM). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ETIMEDOUT">
+            <summary>Function timed out (Linux - ETIMEDOUT). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EOPEN">
+            <summary>File open error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ECREAT">
+            <summary>File creation error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EREAD">
+            <summary>File read error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EWRITE">
+            <summary>File write error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EFILE">
+            <summary>Invalid file content. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EINVIMG">
+            <summary>Invalid image. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EINVFUNC">
+            <summary>Invalid function. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EHWKEY">
+            <summary>Hardware key does not work properly. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EVERSION">
+            <summary>Invalid version. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EASSERT">
+            <summary>Assertion occurred. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EDISCON">
+            <summary>Device is disconnected. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EIMGPROC">
+            <summary>Image processing failed. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_EAUTH">
+            <summary>Authenticity cannot be determined. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ELIC">
+            <summary>Licence handling error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENNCLIMIT">
+            <summary>Limit of the licence reached: no further OCR process can be done. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENNCNLO">
+            <summary>NNC device is no longer operational. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ECMLICNUM">
+            <summary>Only one CARMEN license can be uploaded. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_CODES.GX_ENOMODULE">
+            <summary>The specified module cannot be found (module: 'ls'). </summary>
+        </member>
+        <member name="T:gx.GX_PIXELFORMATS">
+            <summary>Enumerations for pixel format. </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_UNDEF">
+            <summary>Undefined format (for gx_loadimage() functions). </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_GRAY">
+            <summary>8 bit: 8 bit (grayscale) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_RGB555">
+            <summary>16 bit: 1-5-5-5 bit (0,R,G,B) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_BGR555">
+            <summary>16 bit: 1-5-5-5 bit (0,B,G,R) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_RGB565">
+            <summary>16 bit: 5-6-5 bit (R,G,B) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_BGR565">
+            <summary>16 bit: 5-6-5 bit (B,G,R) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_RGB">
+            <summary>24 bit: 8-8-8 bit (R,G,B) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_BGR">
+            <summary>24 bit: 8-8-8 bit (B,G,R) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_RGBA">
+            <summary>32 bit: 8-8-8-8 bit (R,G,B,0) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_BGRA">
+            <summary>32 bit: 8-8-8-8 bit (B,G,R,0) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_YUV422">
+            <summary>32 bit/2 pixel: 8-8-8-8 bit (U,Y1,V,Y2) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_GRAY12">
+            <summary>16 bit: 4-12 bit (0,grayscale) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_RGB12">
+            <summary>48 bit: 4-12-4-12-4-12 bit (0,R,0,G,0,B) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_BGR12">
+            <summary>48 bit: 4-12-4-12-4-12 bit (0,B,0,G,0,R) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_GBRG">
+            <summary>32 bit/4 pixel: 8-8-8-8 bit Bayern-pattern (G,B,R,G) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_BGGR">
+            <summary>32 bit/4 pixel: 8-8-8-8 bit Bayern-pattern (B,G,G,R) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_RGGB">
+            <summary>32 bit/4 pixel: 8-8-8-8 bit Bayern-pattern (R,G,G,B) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_GRBG">
+            <summary>32 bit/4 pixel: 8-8-8-8 bit Bayern-pattern (G,R,B,G) </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_FORMAT_FIRST">
+            <summary>First available pixel format. </summary>
+        </member>
+        <member name="F:gx.GX_PIXELFORMATS.GX_FORMAT_LAST">
+            <summary>Last available pixel format. </summary>
+        </member>
+        <member name="T:gx.GX_IMGFILEFORMATS">
+            <summary>Enumerations for image file format. </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_BMP">
+            <summary>BMP format. </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_JPEG">
+            <summary>JPEG format (ISO/IEC 10918-1). </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_JPEG2K_JPC">
+            <summary>JPEG-2000 Code stream syntax (ISO/IEC 15444-1). </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_JPEG2K_JP2">
+            <summary>JPEG-2000 JP2 format syntax (ISO/IEC 15444-1). </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_JPEG2K">
+            <summary>JPEG-2000 JP2 format syntax (ISO/IEC 15444-1). </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_RAW">
+            <summary>RAW format (uncompressed pixel data without header). </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_PNG">
+            <summary>PNG format (Portable Network Graphics). </summary>
+        </member>
+        <member name="F:gx.GX_IMGFILEFORMATS.GX_WSQ">
+            <summary>WSQ format (Wavelet Scalar Quantization). </summary>
+        </member>
+        <member name="T:gx.GX_MIRRORFLAGS">
+            <summary>Enumerations for mirror operations. </summary>
+        </member>
+        <member name="F:gx.GX_MIRRORFLAGS.GX_MIRROR_NOMIRROR">
+            <summary>No mirroring. </summary>
+        </member>
+        <member name="F:gx.GX_MIRRORFLAGS.GX_MIRROR_HORIZONTAL">
+            <summary>Horizontal mirroring. </summary>
+        </member>
+        <member name="F:gx.GX_MIRRORFLAGS.GX_MIRROR_VERTICAL">
+            <summary>Vertical mirroring. </summary>
+        </member>
+        <member name="T:gx.GX_ZOOMMODES">
+            <summary>Enumerations for zoom modes. </summary>
+        </member>
+        <member name="F:gx.GX_ZOOMMODES.GX_ZOOM_NEAREST">
+            <summary>Nearest algorithm (faster than linear). </summary>
+        </member>
+        <member name="F:gx.GX_ZOOMMODES.GX_ZOOM_LINEAR">
+            <summary>Linear algorithm (better than nearest). </summary>
+        </member>
+        <member name="T:gx.GX_QUICKCONVERT">
+            <summary>Enumerations for quick convert. </summary>
+        </member>
+        <member name="F:gx.GX_QUICKCONVERT.GX_CONVERT_NORMAL">
+            <summary>Normal algorithm. </summary>
+        </member>
+        <member name="F:gx.GX_QUICKCONVERT.GX_CONVERT_QUICK">
+            <summary>Quick algorithm. </summary>
+        </member>
+        <member name="T:gx.GX_QUICKDISPLAY">
+            <summary>Enumerations for quick display. </summary>
+        </member>
+        <member name="F:gx.GX_QUICKDISPLAY.GX_DISPLAY_NORMAL">
+            <summary>Normal algorithm. </summary>
+        </member>
+        <member name="F:gx.GX_QUICKDISPLAY.GX_DISPLAY_QUICK">
+            <summary>Quick algorithm. </summary>
+        </member>
+        <member name="T:gx.GX_IMAGECOMMENTS">
+            <summary>Enumerations for image comments. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_GENERAL">
+            <summary>Type of the general image comment. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP0">
+            <summary>APP0 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP1">
+            <summary>APP1 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP2">
+            <summary>APP2 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP3">
+            <summary>APP3 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP4">
+            <summary>APP4 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP5">
+            <summary>APP5 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP6">
+            <summary>APP6 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP7">
+            <summary>APP7 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP8">
+            <summary>APP8 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP9">
+            <summary>APP9 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP10">
+            <summary>APP10 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP11">
+            <summary>APP11 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP12">
+            <summary>APP12 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP13">
+            <summary>APP13 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP14">
+            <summary>APP14 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_JPEG_APP15">
+            <summary>APP15 comment for jpeg applications. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGECOMMENTS.GX_IMGCOMM_INVALIDFORMAT">
+            <summary>Invalid format signal at image loading. </summary>
+        </member>
+        <member name="T:gx.GX_IMAGEPROPERTIES1">
+            <summary>Enumerations for image properties. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_BMP_FORCE24BPP">
+            <summary>Identifier for bmp/force24bpp property. </summary>
+            <remarks><p>The BMP writer forces the 24 bit per pixel mode. It can be:
+<list type="bullet">
+<item><p>0 : the indexed mode is used instead (default)</p></item>
+<item><p>1 : the writer uses 24 bit per pixel (RGB/BGR) mode (faster than indexed) </p></item>
+</list>
+</p></remarks>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_BMP_ENABLERLE">
+            <summary>Identifier for bmp/enablerle property. </summary>
+            <remarks><p>The BMP writer can use the RLE compression. It can be:
+<list type="bullet">
+<item><p>0 : disables the RLE compression (faster, default)</p></item>
+<item><p>1 : enables the RLE compression </p></item>
+</list>
+</p></remarks>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_SCALE_NUM">
+            <summary>Identifier for jpeg/decompress/scale_num property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_SCALE_DENOM">
+            <summary>Identifier for jpeg/decompress/scale_denom property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_DCT_METHOD">
+            <summary>Identifier for jpeg/decompress/dct_method property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_DO_FANCY_UPSAMPLING">
+            <summary>Identifier for jpeg/decompress/do_fancy_upsampling property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_DO_BLOCK_SMOOTHING">
+            <summary>Identifier for jpeg/decompress/do_block_smoothing property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_QUALITY">
+            <summary>Identifier for jpeg/compress/quality property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_PROGRESSIVE">
+            <summary>Identifier for jpeg/compress/progressive property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_OPTIMIZE_CODING">
+            <summary>Identifier for jpeg/compress/optimize_coding property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_RESTART_INTERVAL">
+            <summary>Identifier for jpeg/compress/restart_interval property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_RESTART_IN_ROWS">
+            <summary>Identifier for jpeg/compress/restart_in_rows property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_SMOOTHING_FACTOR">
+            <summary>Identifier for jpeg/compress/smoothing_factor property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG_EXT_DO_ZEROMEM">
+            <summary>Identifier for jpeg/decompress/do_zeromem property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_IMGAREATLX">
+            <summary>Identifier for jpeg2k/imgareatlx property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_IMGAREATLY">
+            <summary>Identifier for jpeg2k/imgareatly property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_TILEGRDTLX">
+            <summary>Identifier for jpeg2k/tilegrdtlx property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_TILEGRDTLY">
+            <summary>Identifier for jpeg2k/tilegrdtly property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_TILEWIDTH">
+            <summary>Identifier for jpeg2k/tilewidth property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_TILEHEIGHT">
+            <summary>Identifier for jpeg2k/tileheight property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_PRCWIDTH">
+            <summary>Identifier for jpeg2k/prcwidth property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_PRCHEIGHT">
+            <summary>Identifier for jpeg2k/prcheight property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_CBLKWIDTH">
+            <summary>Identifier for jpeg2k/cblkwidth property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_CBLKHEIGHT">
+            <summary>Identifier for jpeg2k/cblkheight property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_MODE">
+            <summary>Identifier for jpeg2k/mode property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_RATE">
+            <summary>Identifier for jpeg2k/rate property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_ILYRRATES">
+            <summary>Identifier for jpeg2k/ilyrrates property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_PRG">
+            <summary>Identifier for jpeg2k/prg property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_NOMCT">
+            <summary>Identifier for jpeg2k/nomct property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_NUMRLVLS">
+            <summary>Identifier for jpeg2k/numrlvls property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_SOP">
+            <summary>Identifier for jpeg2k/sop property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_EPH">
+            <summary>Identifier for jpeg2k/eph property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_LAZY">
+            <summary>Identifier for jpeg2k/lazy property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_TERMALL">
+            <summary>Identifier for jpeg2k/termall property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_SEGSYM">
+            <summary>Identifier for jpeg2k/segsym property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_VCAUSAL">
+            <summary>Identifier for jpeg2k/vcausal property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_PTERM">
+            <summary>Identifier for jpeg2k/pterm property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_RESETPROB">
+            <summary>Identifier for jpeg2k/resetprob property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_JPEG2K_NUMGBITS">
+            <summary>Identifier for jpeg2k/numgbits property. </summary>
+        </member>
+        <member name="F:gx.GX_IMAGEPROPERTIES1.GX_IMGPROP_WSQ_BITRATE">
+            <summary>Identifier for WSQ bitrate property. </summary>
+        </member>
+        <member name="T:gx.GX_ERROR_FLAGS">
+            <summary>Enumerations for flags parameter of gx_seterror() function. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_CLEAR">
+            <summary>Clears the thread-local buffer of the error. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_APPEND">
+            <summary>Inserts the text to the end of the buffer. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_PREPEND">
+            <summary>Inserts the text to the start of the buffer. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_APPMODE">
+            <summary>Default flag for GX applications. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_NOARGS">
+            <summary>The function doesn't use the argument parameter. </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_LOCAL">
+            <summary>Do not use this! (It is required for backward compatibility). </summary>
+        </member>
+        <member name="F:gx.GX_ERROR_FLAGS.GX_ERR_FLAG_DIRECT">
+            <summary>Do not use the default error string. </summary>
+        </member>
+        <member name="T:gx.GX_INFO_IDS">
+            <summary>Identification numbers for gxMODULEINFO structure (for GXSD 7.x modules). </summary>
+        </member>
+        <member name="F:gx.GX_INFO_IDS.GXMODULE_INFO_ID">
+            <summary>Module identification number for gxMODULEINFO structure (for GXSD 7.x modules). </summary>
+        </member>
+        <member name="F:gx.GX_INFO_IDS.GXUSRDRV_INFO_ID">
+            <summary>User driver identification number for gxMODULEINFO structure (for GXSD 7.x modules). </summary>
+        </member>
+        <member name="T:gx.GX_DEVICE_FLAGS">
+            <summary>Flags for device operations. </summary>
+        </member>
+        <member name="F:gx.GX_DEVICE_FLAGS.GX_DEVICE_FLAG_TYPE">
+            <summary>Type of the device. </summary>
+        </member>
+        <member name="F:gx.GX_DEVICE_FLAGS.GX_DEVICE_FLAG_NAME">
+            <summary>Name of the device. </summary>
+        </member>
+        <member name="F:gx.GX_DEVICE_FLAGS.GX_DEVICE_FLAG_SERIAL">
+            <summary>Serial number of the device. </summary>
+        </member>
+        <member name="F:gx.GX_DEVICE_FLAGS.GX_DEVICE_FLAG_SERIAL_NOMSK">
+            <summary>NNC serial number of the device. </summary>
+        </member>
+        <member name="F:gx.GX_DEVICE_FLAGS.GX_DEVICE_FLAG_EXCLUSIVE">
+            <summary>Exclusive open mode. </summary>
+        </member>
+        <member name="T:gx.GX_SYSINFO_FLAGS">
+            <summary>Flags for querying the GX system info. </summary>
+        </member>
+        <member name="F:gx.GX_SYSINFO_FLAGS.GX_SYSINFO_FLAG_FREEFLOW">
+            <summary>Querying the number of the freeflow licence. </summary>
+        </member>
+        <member name="F:gx.GX_SYSINFO_FLAGS.GX_SYSINFO_FLAG_PARKING">
+            <summary>Querying the number of the parking licence. </summary>
+        </member>
+        <member name="F:gx.GX_SYSINFO_FLAGS.GX_SYSINFO_FLAG_ACCR">
+            <summary>Querying the number of the container licence. </summary>
+        </member>
+        <member name="F:gx.GX_SYSINFO_FLAGS.GX_SYSINFO_FLAG_PARKINGLANE">
+            <summary>Querying the number of the parking lane licence. </summary>
+        </member>
+        <member name="F:gx.GX_SYSINFO_FLAGS.GX_SYSINFO_FLAG_FACE">
+            <summary>Querying the number of the face ident licence. </summary>
+        </member>
+        <member name="F:gx.GX_SYSINFO_FLAGS.GX_SYSINFO_FLAG_PR">
+            <summary>Querying the number of the passport reader licence. </summary>
+        </member>
+        <member name="T:cm.CM_DUPLICATERESULT">
+            <summary>Parameter structure for cm_duplicateresult() function. </summary>
+        </member>
+        <member name="F:cm.CM_DUPLICATERESULT.psrc">
+            <summary>Pointer to the source <see cref="T:cm.cmNP"/> structure to copy. </summary>
+        </member>
+        <member name="F:cm.CM_DUPLICATERESULT.pdest">
+            <summary>Pointer to a pointer where the function creates a copy of the source <see cref="T:cm.cmNP"/> structure. </summary>
+        </member>
+        <member name="M:cm.CM_DUPLICATERESULT.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDEMPTYADR">
+            <summary>Parameter structure for cm_findemptyadr() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDEMPTYADR.padrresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="M:cm.CM_FINDEMPTYADR.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDENGINES">
+            <summary>Parameter structure for cm_findengines() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDENGINES.engines">
+            <summary>Pointer to a buffer to store the name of the engines. </summary>
+            <remarks>The function reallocates the buffer for the names. </remarks>
+        </member>
+        <member name="F:cm.CM_FINDENGINES.nengine">
+            <summary>The number of the found engines. </summary>
+        </member>
+        <member name="M:cm.CM_FINDENGINES.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDENGINESA">
+            <summary>Parameter structure for cm_findenginesa() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDENGINESA.engines">
+            <summary>Pointer to a buffer to store the name of the engines. </summary>
+            <remarks>The function reallocates the buffer for the names. </remarks>
+        </member>
+        <member name="F:cm.CM_FINDENGINESA.nengine">
+            <summary>The number of the found engines. </summary>
+        </member>
+        <member name="M:cm.CM_FINDENGINESA.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDFIRST">
+            <summary>Parameter structure for cm_findfirst() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRST.pimage">
+            <summary>Pointer to an initialized image structure. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRST.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="M:cm.CM_FINDFIRST.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDFIRSTPP">
+            <summary>Parameter structure for cm_findfirstPP() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRSTPP.pimage">
+            <summary>Pointer to an initialized image structure. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRSTPP.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRSTPP.ppostprocengine">
+            <summary>Pointer to a pointer where the function reallocates the name of the post process engine. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRSTPP.b_localpostprocess">
+            <summary>If true, the engine calls the locally installed post process engine. </summary>
+        </member>
+        <member name="M:cm.CM_FINDFIRSTPP.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDFIRSTV">
+            <summary>Parameter structure for cm_findfirstV() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRSTV.pimage">
+            <summary>Pointer to an initialized image structure. </summary>
+        </member>
+        <member name="F:cm.CM_FINDFIRSTV.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="M:cm.CM_FINDFIRSTV.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDNEXT">
+            <summary>Parameter structure for cm_findnext() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDNEXT.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="M:cm.CM_FINDNEXT.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDNEXTPP">
+            <summary>Parameter structure for cm_findnextPP() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDNEXTPP.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="F:cm.CM_FINDNEXTPP.ppostprocengine">
+            <summary>Pointer to a pointer where the function reallocates the name of the post process engine. </summary>
+        </member>
+        <member name="F:cm.CM_FINDNEXTPP.b_localpostprocess">
+            <summary>If true, the engine calls the locally installed post process engine. </summary>
+        </member>
+        <member name="M:cm.CM_FINDNEXTPP.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FINDNEXTV">
+            <summary>Parameter structure for cm_findnextV() function. </summary>
+        </member>
+        <member name="F:cm.CM_FINDNEXTV.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="M:cm.CM_FINDNEXTV.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_FORMAT">
+            <summary>Parameter structure for cm_format() function. </summary>
+        </member>
+        <member name="F:cm.CM_FORMAT.pimage">
+            <summary>Pointer to a source image. </summary>
+        </member>
+        <member name="F:cm.CM_FORMAT.ntip">
+            <summary>It will contain the number of tips. </summary>
+        </member>
+        <member name="F:cm.CM_FORMAT.tips">
+            <summary>Buffer for the result tips. </summary>
+        </member>
+        <member name="F:cm.CM_FORMAT.panprresult">
+            <summary>Pointer to a pointer where the function reallocates the result. </summary>
+        </member>
+        <member name="M:cm.CM_FORMAT.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_GETCOUNTRYCODE">
+            <summary>Parameter structure for cm_getcountrycode() function. </summary>
+        </member>
+        <member name="F:cm.CM_GETCOUNTRYCODE.type">
+            <summary>Type parameter from the ANPR result. </summary>
+            <remarks>See <see cref="T:cm.cmNP"/> structure. </remarks>
+        </member>
+        <member name="F:cm.CM_GETCOUNTRYCODE.cctype">
+            <summary>Country code type. </summary>
+            <remarks>See <see cref="T:cm.CC_TYPE"/> enumeration. </remarks>
+        </member>
+        <member name="F:cm.CM_GETCOUNTRYCODE.pccname">
+            <summary>Pointer to a character buffer to store the country code. </summary>
+        </member>
+        <member name="F:cm.CM_GETCOUNTRYCODE.sccname">
+            <summary>Size of the pccname buffer. </summary>
+        </member>
+        <member name="M:cm.CM_GETCOUNTRYCODE.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_PARM_GETENGINEPROPERTIES">
+            <summary>Parameter structure for the cm_getengineproperties() function (Unicode version). </summary>
+        </member>
+        <member name="F:cm.CM_PARM_GETENGINEPROPERTIES.proplist">
+            <summary>Pointer to a memory area where to store the names. </summary>
+        </member>
+        <member name="F:cm.CM_PARM_GETENGINEPROPERTIES.sproplist">
+            <summary>Size of the memory area in characters (not in bytes). </summary>
+        </member>
+        <member name="F:cm.CM_PARM_GETENGINEPROPERTIES.separator">
+            <summary>Separator string to separate the properties. </summary>
+        </member>
+        <member name="F:cm.CM_PARM_GETENGINEPROPERTIES.b_value">
+            <summary>The function returns the property names with or without the values of the properties. </summary>
+        </member>
+        <member name="M:cm.CM_PARM_GETENGINEPROPERTIES.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.CM_PARM_LRTEXT2DISPLAY">
+            <summary>Parameter structure for the cm_lrtext2display() function (Unicode version). </summary>
+        </member>
+        <member name="F:cm.CM_PARM_LRTEXT2DISPLAY.disptext">
+            <summary>Pointer to a memory area where to store the displayable lrtext. </summary>
+        </member>
+        <member name="F:cm.CM_PARM_LRTEXT2DISPLAY.sdisptext">
+            <summary>Size of the memory area in characters (not in bytes). </summary>
+        </member>
+        <member name="F:cm.CM_PARM_LRTEXT2DISPLAY.lrtext">
+            <summary>Text read from left to right. </summary>
+        </member>
+        <member name="M:cm.CM_PARM_LRTEXT2DISPLAY.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.cmCharacter">
+            <summary>A character of the plate result. </summary>
+        </member>
+        <member name="F:cm.cmCharacter.frame">
+            <summary>Coordinates of the character tip frame. </summary>
+        </member>
+        <member name="F:cm.cmCharacter.bkcolor">
+            <summary>Background color of the character tip. </summary>
+            <remarks>The color is in BGR format. </remarks>
+        </member>
+        <member name="F:cm.cmCharacter.color">
+            <summary>Color of the character tip. </summary>
+            <remarks>The color is in BGR format. </remarks>
+        </member>
+        <member name="F:cm.cmCharacter.code">
+            <summary>Code of the character in unicode type. </summary>
+        </member>
+        <member name="F:cm.cmCharacter.confidence">
+            <summary>The confidence level of the character tip. </summary>
+        </member>
+        <member name="M:cm.cmCharacter.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.cmNP">
+            <summary>Structure for the number plate. </summary>
+        </member>
+        <member name="F:cm.cmNP.gxid">
+            <summary>Identifier of the <see cref="T:cm.cmNP"/> structure. </summary>
+        </member>
+        <member name="F:cm.cmNP.frame">
+            <summary>The coordinates of the license plate frame. </summary>
+        </member>
+        <member name="F:cm.cmNP.bkcolor">
+            <summary>Background color of the license plate. </summary>
+            <remarks>The color is in BGR format. </remarks>
+        </member>
+        <member name="F:cm.cmNP.color">
+            <summary>Color of the license plate text. </summary>
+            <remarks>The color is in BGR format. </remarks>
+        </member>
+        <member name="F:cm.cmNP.type">
+            <summary>Type of the license plate. </summary>
+        </member>
+        <member name="F:cm.cmNP.confidence">
+            <summary>Confidence level of the license plate. </summary>
+        </member>
+        <member name="F:cm.cmNP.ntip">
+            <summary>Number of the all character tips. </summary>
+        </member>
+        <member name="F:cm.cmNP.tips">
+            <summary>Pointer to the all character tips. </summary>
+        </member>
+        <member name="F:cm.cmNP.ncharacter">
+            <summary>Number of the character tips of the plate text. </summary>
+        </member>
+        <member name="F:cm.cmNP.characters">
+            <summary>List of pointers, each of its is a pointer to a character tip in the all character tips. </summary>
+        </member>
+        <member name="F:cm.cmNP.text">
+            <summary>Pointer to the plate text in ASCII string format. </summary>
+        </member>
+        <member name="F:cm.cmNP.wtext">
+            <summary>Pointer to the plate text in Unicode string format. </summary>
+        </member>
+        <member name="M:cm.cmNP.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:cm.cmNP::CHR">
+            <summary>Structure for a character tip. </summary>
+        </member>
+        <member name="F:cm.cmNP::CHR.frame">
+            <summary>Coordinates of the character tip frame. </summary>
+        </member>
+        <member name="F:cm.cmNP::CHR.bkcolor">
+            <summary>Background color of the character tip. </summary>
+            <remarks>The color is in BGR format. </remarks>
+        </member>
+        <member name="F:cm.cmNP::CHR.color">
+            <summary>Color of the character tip. </summary>
+            <remarks>The color is in BGR format. </remarks>
+        </member>
+        <member name="F:cm.cmNP::CHR.code">
+            <summary>Unicode code of the character. </summary>
+        </member>
+        <member name="F:cm.cmNP::CHR.confidence">
+            <summary>The confidence level of the character tip. </summary>
+        </member>
+        <member name="M:cm.cmNP::CHR.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:gx.gxPG2">
+            <summary>Defines two points. </summary>
+        </member>
+        <member name="F:gx.gxPG2.x1">
+            <summary>Horizontal coordinate of the first point. </summary>
+        </member>
+        <member name="F:gx.gxPG2.y1">
+            <summary>Vertical coordinate of the first point. </summary>
+        </member>
+        <member name="F:gx.gxPG2.x2">
+            <summary>Horizontal coordinate of the second point. </summary>
+        </member>
+        <member name="F:gx.gxPG2.y2">
+            <summary>Vertical coordinate of the second point. </summary>
+        </member>
+        <member name="M:gx.gxPG2.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:gx.gxPG4">
+            <summary>Defines four points. </summary>
+        </member>
+        <member name="F:gx.gxPG4.x1">
+            <summary>Horizontal coordinate of the first point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.y1">
+            <summary>Vertical coordinate of the first point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.x2">
+            <summary>Horizontal coordinate of the second point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.y2">
+            <summary>Vertical coordinate of the second point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.x3">
+            <summary>Horizontal coordinate of the third point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.y3">
+            <summary>Vertical coordinate of the third point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.x4">
+            <summary>Horizontal coordinate of the fourth point. </summary>
+        </member>
+        <member name="F:gx.gxPG4.y4">
+            <summary>Vertical coordinate of the fourth point. </summary>
+        </member>
+        <member name="M:gx.gxPG4.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:gx.gxPNT">
+            <summary>Defines a single point. </summary>
+        </member>
+        <member name="F:gx.gxPNT.x">
+            <summary>Horizontal coordinate of the point. </summary>
+        </member>
+        <member name="F:gx.gxPNT.y">
+            <summary>Vertical coordinate of the point. </summary>
+        </member>
+        <member name="M:gx.gxPNT.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:gx.gxPNTF">
+            <summary>Defines one point with floating-point values. </summary>
+        </member>
+        <member name="F:gx.gxPNTF.x">
+            <summary>Horizontal coordinate of the point. </summary>
+        </member>
+        <member name="F:gx.gxPNTF.y">
+            <summary>Vertical coordinate of the point. </summary>
+        </member>
+        <member name="M:gx.gxPNTF.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+        <member name="T:gx.gxRCT">
+            <summary>Rectangle definition. </summary>
+        </member>
+        <member name="F:gx.gxRCT.left">
+            <summary>Left coordinate (X1) of the rectangle. </summary>
+        </member>
+        <member name="F:gx.gxRCT.top">
+            <summary>Top coordinate (Y1) of the rectangle. </summary>
+        </member>
+        <member name="F:gx.gxRCT.right">
+            <summary>Right coordinate (X2) of the rectangle. </summary>
+        </member>
+        <member name="F:gx.gxRCT.bottom">
+            <summary>Bottom coordinate (Y2) of the rectangle. </summary>
+        </member>
+        <member name="M:gx.gxRCT.#ctor">
+            <summary>Default constructor.</summary>
+        </member>
+    </members>
+</doc>

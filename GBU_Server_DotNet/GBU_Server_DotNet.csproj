@@ -87,7 +87,7 @@
   <ItemGroup>
     <Reference Include="cmanprdotnet8, Version=7.2.6.4, Culture=neutral, PublicKeyToken=70d355eafe3ed54c, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Windows\SysWOW64\gx\dotnet\cmanprdotnet8.dll</HintPath>
+      <HintPath>$(SystemRoot)\SysWOW64\gx\dotnet\cmanprdotnet8.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=4.9.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
@@ -96,7 +96,7 @@
     </Reference>
     <Reference Include="gxdotnet8, Version=7.2.10.1, Culture=neutral, PublicKeyToken=3d92ae624958d2aa, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Windows\SysWOW64\gx\dotnet\gxdotnet8.dll</HintPath>
+      <HintPath>$(SystemRoot)\Windows\SysWOW64\gx\dotnet\gxdotnet8.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MjpegProcessor">
@@ -104,7 +104,7 @@
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll</HintPath>
+      <HintPath>$(SystemRoot)\Program Files (x86)\MySQL\MySQL Connector Net 6.9.8\Assemblies\v4.5\MySql.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

@@ -360,7 +360,7 @@ namespace GBU_Server_DotNet
                             {
                                 double playtime = player.GetPlayTime();
                                 //Console.WriteLine("libVlc playtime " + playtime + " lastplaytime " + lastPlayTime + " mediaMonitorCount " + mediaMonitorCount);
-                                if (lastPlayTime == playtime)
+                                if (lastPlayTime == playtime && playtime != 0)
                                 {
                                     mediaMonitorCount++;
                                 }
@@ -369,7 +369,7 @@ namespace GBU_Server_DotNet
                                     mediaMonitorCount = 0;
                                 }
 
-                                if (mediaMonitorCount > 10)
+                                if (mediaMonitorCount > 50)
                                 {
                                     // reconnect
                                     isReconnect = true;

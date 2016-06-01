@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace GBU_Server_DotNet
 {
-    public class Camera : INotifyPropertyChanged
+    public class Setting : INotifyPropertyChanged
     {
         private int _camID;
         private string _camURL;
@@ -213,7 +213,7 @@ namespace GBU_Server_DotNet
             }
         }
 
-        public Camera()
+        public Setting()
         {
             _camID = 0;
             //_camURL = "rtsp://admin:admin@14.52.220.82/media/video1";
@@ -232,7 +232,7 @@ namespace GBU_Server_DotNet
             _size = 25;
         }
 
-        public Camera(int id)
+        public Setting(int id)
         {
             _camID = id;
             //_camURL = "rtsp://admin:admin@14.52.220.82/media/video1";
@@ -251,7 +251,7 @@ namespace GBU_Server_DotNet
             _size = 25;
         }
 
-        public Camera(int id, string url)
+        public Setting(int id, string url)
         {
             _camID = id;
             _camURL = url;
@@ -277,9 +277,9 @@ namespace GBU_Server_DotNet
                 byte[] buffer = new byte[fs.Length];
                 fs.Read(buffer, 0, (int)fs.Length);
                 System.IO.MemoryStream stream = new System.IO.MemoryStream(buffer);
-                Camera camera = new Camera();
+                Setting camera = new Setting();
                 XmlSerializer formatter = new XmlSerializer(camera.GetType());
-                camera = (Camera)formatter.Deserialize(stream);
+                camera = (Setting)formatter.Deserialize(stream);
 
                 // read values
                 _camID = camera.camID;

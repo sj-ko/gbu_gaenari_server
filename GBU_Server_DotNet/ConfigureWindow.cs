@@ -24,10 +24,10 @@ namespace GBU_Server_DotNet
             InitializeComponent();
         }
 
-        public void Init(Camera camera = null)
+        public void Init(Setting camera = null)
         {
             MainForm form = (MainForm)this.Owner;
-            Camera cam;
+            Setting cam;
 
             if (camera == null)
             {
@@ -189,9 +189,9 @@ namespace GBU_Server_DotNet
                 byte[] buffer = new byte[fs.Length];
                 fs.Read(buffer, 0, (int)fs.Length);
                 System.IO.MemoryStream stream = new System.IO.MemoryStream(buffer);
-                Camera camera = new Camera();
+                Setting camera = new Setting();
                 XmlSerializer formatter = new XmlSerializer(camera.GetType());
-                camera = (Camera)formatter.Deserialize(stream);
+                camera = (Setting)formatter.Deserialize(stream);
 
                 Init(camera);
 
@@ -213,7 +213,7 @@ namespace GBU_Server_DotNet
 
             if (dialog.FileName != "")
             {
-                Camera camera = new Camera();
+                Setting camera = new Setting();
 
                 double upRatio = ((double)form.panel1.Width / (double)Configure_croparea.Width);
 

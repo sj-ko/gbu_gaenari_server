@@ -221,7 +221,17 @@ namespace GBU_Server_DotNet
             if (!File.Exists(path + logFileName))
                 File.Create(path + logFileName).Close();
 
-            image.Save(path + imageFileName, ImageFormat.Jpeg);
+            try
+            {
+                using (Bitmap tempImage = new Bitmap(image))
+                {
+                    tempImage.Save(path + imageFileName, ImageFormat.Jpeg);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception occured creating image :: " + ex.Message);
+            }
 
             StreamWriter file = new StreamWriter(path + logFileName, true);
             file.WriteLine(camid + "," + plate + "," + datetime + "," + path + imageFileName);

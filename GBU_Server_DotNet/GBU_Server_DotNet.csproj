@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ANPR.cs" />
-    <Compile Include="Camera.cs" />
+    <Compile Include="Setting.cs" />
     <Compile Include="ControlWriter.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="FileServer.cs" />

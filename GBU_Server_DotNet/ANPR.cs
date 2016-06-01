@@ -1,4 +1,4 @@
-﻿//#define FAST_DETECT
+﻿#define FAST_DETECT
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace GBU_Server_DotNet
     {
         public const int CANDIDATE_REMOVE_TIME = 600000; //60000; // ms
         //public const int CANDIDATE_COUNT_FOR_PASS = 5; // default is 3, for gas station stop is 20
-        public const int MAX_IMAGE_BUFFER = 30;
+        public const int MAX_IMAGE_BUFFER = 100; //30;
     }
 
     class ANPR
@@ -571,11 +571,11 @@ namespace GBU_Server_DotNet
                             str = str.Insert(0, "부산");
                         }
 
-                        else if (str.Substring(0, 2).EndsWith("산"))
+                        /*else if (str.Substring(0, 2).EndsWith("산"))
                         {
                             str = str.Remove(0, 2);
                             str = str.Insert(0, "부산");
-                        }
+                        }*/
 
                         else if (str.Substring(0, 2).Equals("경거"))
                         {
@@ -611,6 +611,12 @@ namespace GBU_Server_DotNet
                         {
                             str = str.Remove(0, 2);
                             str = str.Insert(0, "경기");
+                        }
+
+                        else if (str.StartsWith("세"))
+                        {
+                            str = str.Remove(0, 2);
+                            str = str.Insert(0, "세종");
                         }
                     }
                 }

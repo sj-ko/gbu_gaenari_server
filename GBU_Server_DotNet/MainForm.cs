@@ -5,6 +5,7 @@
  */
 
 //#define TEST_PAINTEVENT
+#define RECONNECT
 
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace GBU_Server_DotNet
 {
     public partial class MainForm : Form
     {
-        public Camera camera;
+        public Setting camera;
         private MediaPlayer player;
         private ANPR anpr;
         private System.Threading.Timer timer;
@@ -136,7 +137,7 @@ namespace GBU_Server_DotNet
 
         private void InitCamera()
         {
-            camera = new Camera();
+            camera = new Setting();
             camera.PropertyChanged += camera_PropertyChanged;
 
             if (configPath.Length > 0)
@@ -237,12 +238,22 @@ namespace GBU_Server_DotNet
             notifyColor = Color.Red;
         }
 
-        private void Stop()
+        private void StopLibVLCThread()
         {
             if (player != null)
             {
                 player.Stop();
             }
+        }
+
+        private void Stop()
+        {
+            /*if (player != null)
+            {
+                player.Stop();
+            }*/
+            Thread stopLibVLCThread = new Thread(new ThreadStart(StopLibVLCThread));
+            stopLibVLCThread.Start();
 
             if (playerMjpeg != null)
             {
@@ -327,16 +338,18 @@ namespace GBU_Server_DotNet
                             int pushMediaResult = anpr.pushMedia(bmp, bmp.Width, bmp.Height);
                             bmp.Dispose();
 
+#if RECONNECT
                             if (pushMediaResult < 1)
                             {
                                 Console.WriteLine("Overflow count " + (overflowCount++));
                             }
                             
-                            if (overflowCount > 5)
+                            if (overflowCount > 50)
                             {
                                 Console.WriteLine("Overflow count exceeded. Try to reconnect!");
                                 isReconnect = true;
                             }
+#endif
 
                             if (notifyColor == Color.Red || notifyColor == Color.LightGreen)
                             {
@@ -355,12 +368,13 @@ namespace GBU_Server_DotNet
 
                             }
 
+#if RECONNECT
                             // get libvlc media state and reconnect
                             if (player != null)
                             {
                                 double playtime = player.GetPlayTime();
                                 //Console.WriteLine("libVlc playtime " + playtime + " lastplaytime " + lastPlayTime + " mediaMonitorCount " + mediaMonitorCount);
-                                if (lastPlayTime == playtime && playtime != 0)
+                                if (lastPlayTime == playtime)
                                 {
                                     mediaMonitorCount++;
                                 }
@@ -385,6 +399,7 @@ namespace GBU_Server_DotNet
                                 Stop();
                                 Play();
                             }
+#endif
 
                         }
                     }
